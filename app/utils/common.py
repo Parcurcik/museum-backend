@@ -3,13 +3,10 @@ from datetime import datetime, timedelta
 from inspect import iscoroutinefunction
 from typing import Any, AsyncGenerator, Awaitable, Callable, Iterable, List, Set, Tuple, TypeVar
 
-import cv2
-import numpy as np
 from fastapi import Request
 from starlette.responses import StreamingResponse
 
 from .types import DictStrAny, TupleAny, TupleStr
-
 
 _T = TypeVar('_T')
 _IterableT = Iterable[_T]
@@ -60,16 +57,8 @@ def split_seq_into_two_lists(values: _IterableT, good_values: _IterableT) -> Tup
     return good, bad
 
 
-def bytes2image(bytes_: bytes, is_color: bool = True) -> np.array:
-    return cv2.imdecode(np.frombuffer(bytes_, np.uint8), cv2.IMREAD_UNCHANGED if is_color else cv2.IMREAD_GRAYSCALE)
-
-
-def image2bytes(image: np.array, ext: str) -> bytes:
-    return cv2.imencode(ext, image)[1].tobytes()
-
-
 async def log_request_middleware(
-    request: Request, call_next: Callable[[Request], Awaitable[StreamingResponse]]
+        request: Request, call_next: Callable[[Request], Awaitable[StreamingResponse]]
 ) -> StreamingResponse:
     response = await call_next(request)
     url = request.url.path + (f'?{request.url.query}' if len(request.url.query) > 0 else '')
