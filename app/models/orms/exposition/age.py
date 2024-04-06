@@ -2,7 +2,7 @@ from sqlalchemy import BigInteger, Boolean, Column, DateTime, Enum, Float, Forei
 from sqlalchemy.orm import relationship
 
 from app.models.mixin.date import DateORMMixin
-from app.models.orms.Base import BaseORM
+from app.models.orms.base import BaseORM
 
 from app.models.enums import AgeEnum
 
