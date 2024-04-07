@@ -7,12 +7,13 @@ from fastapi.responses import JSONResponse
 from api.configuration.api_answers import ServerSetup
 
 
-router = APIRouter(
-    prefix='/user'
+site_router = APIRouter(
+    prefix='/user',
+    tags=['user']
 )
 
 
-@router.get('/hello')
+@site_router.get('/hello')
 def get_user():
     return {
         'Museum': 'start'
