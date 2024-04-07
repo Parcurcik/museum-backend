@@ -4,7 +4,7 @@ from asyncio import sleep
 from fastapi import APIRouter, Body
 from fastapi.responses import JSONResponse
 
-from app.configuration.api_answers import ServerSetup
+from api.configuration.api_answers import ServerSetup
 
 
 router = APIRouter(

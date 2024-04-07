@@ -1,8 +1,8 @@
 from sqlalchemy import BigInteger, Boolean, Column, DateTime, Enum, Float, ForeignKey, String, Table, UniqueConstraint, Integer
 from sqlalchemy.orm import relationship
 
-from app.models.mixin.date import DateORMMixin
-from app.models.orms.base import BaseORM
+from api.models.mixin.date import DateORMMixin
+from api.models.orms.base import BaseORM
 
 
 class TicketORM(BaseORM, DateORMMixin):

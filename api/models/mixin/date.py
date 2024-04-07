@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql.psycopg2 import PGCompiler_psycopg2
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.sql.functions import FunctionElement
 
-from app.utils.common import now
+from api.utils.common import now
 
 
 class ekt_now(FunctionElement):

@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 
-from app.configuration.server import Server
+from api.configuration.server import Server
 
 
-def create_app(_=None) -> FastAPI:
+def main_api(_=None) -> FastAPI:
     app = FastAPI(
         title='MUSEUM API',
         description='API for MUSEUM',

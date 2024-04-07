@@ -7,7 +7,7 @@ from sqlalchemy import DDL, CheckConstraint, Column, Index, Table, UniqueConstra
 from sqlalchemy.ext.declarative import DeclarativeMeta, declarative_base, declared_attr
 from sqlalchemy.orm import Mapper, QueryContext, RelationshipProperty
 
-from app.utils.types import (
+from api.utils.types import (
     DictStrAny,
     OptionalSetStr,
     PKType,

@@ -9,12 +9,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import RelationshipProperty
 from sqlalchemy.sql import ClauseElement
 
-from app.utils.common import call_function
-from app.utils.types import ListAny, Relationship
+from api.utils.common import call_function
+from api.utils.types import ListAny, Relationship
 
 
 if TYPE_CHECKING:
-    from app.models import BaseORM
+    from api.models import BaseORM
 
 
 class SessionListenerType(Enum):
