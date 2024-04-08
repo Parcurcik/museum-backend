@@ -6,9 +6,8 @@ from fastapi import FastAPI
 class Routes:
 
     routers: tuple
-    prefix: str = '/api/v1'
 
     def register_routes(self, app: FastAPI):
 
         for router in self.routers:
-            app.include_router(router, prefix="/api/v1")
+            app.include_router(router)

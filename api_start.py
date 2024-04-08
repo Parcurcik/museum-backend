@@ -4,6 +4,7 @@ from alembic import command
 from alembic.config import Config
 from api import main_api
 from api.configuration.config import settings
+from api.configuration.database import connect_db
 
 main_api = main_api()
 

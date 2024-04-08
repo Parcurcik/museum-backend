@@ -2,14 +2,16 @@ from fastapi import FastAPI
 
 from api.configuration.server import Server
 
+from api.configuration.config import settings
+
 
 def main_api(_=None) -> FastAPI:
     app = FastAPI(
         title='MUSEUM API',
         description='API for MUSEUM',
-        openapi_url=f'/api/v1/openapi.json',
-        docs_url=f'/api/v1/docs',
-        redoc_url=f'/api/v1//redoc',
+        openapi_url=f'{settings.PREFIX}/openapi.json',
+        docs_url=f'{settings.PREFIX}/docs',
+        redoc_url=f'{settings.PREFIX}/redoc',
         swagger_ui_parameters={'docExpansion': 'none', 'displayRequestDuration': True, 'filter': True},
     )
 
