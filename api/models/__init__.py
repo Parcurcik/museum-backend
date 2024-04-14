@@ -2,17 +2,22 @@ from .mixin import (
     DateORMMixin
 )
 from .orms import (
-    BaseORM, AgeORM, GenreORM, EventORM, LocationORM, TicketORM
+    BaseORM,
+    EventORM,
+    EventGenreORM,
+    EventLocationORM,
+    EventVisitorAgeORM,
+    AreaORM
 )
 
 __all__ = (
+    # base
     'BaseORM',
     'DateORMMixin'
-    # exposition
-    'AgeORM',
+    # event
     'EventORM',
-    'GenreORM',
-    'LocationORM',
-    # ticket
-    'TicketORM'
+    'EventGenreORM',
+    'EventLocationORM',
+    'EventVisitorAgeORM',
+    'AreaORM'
 )

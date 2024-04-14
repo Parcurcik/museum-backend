@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class CategoryEnum(str, Enum):
+class GenreEnum(str, Enum):
     excursion = 'экскурсия'
     master_class = 'мастер-класс'
     spectacle = 'спектакль'
@@ -16,7 +16,7 @@ class CategoryEnum(str, Enum):
     film_screening = 'кинопоказ'
 
 
-class AgeEnum(str, Enum):
+class VisitorAgeEnum(str, Enum):
     adults = 'взрослые'
     teenagers = 'подростки'
     kids = 'дети'

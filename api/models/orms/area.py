@@ -7,11 +7,18 @@ from api.models.orms.base import BaseORM
 from api.models.enums import AreaEnum
 
 
-class LocationORM(BaseORM, DateORMMixin):
-    location_id = Column(BigInteger, primary_key=True)
+class AreaORM(BaseORM, DateORMMixin):
+    area_id = Column(BigInteger, primary_key=True)
     name = Column(Enum(AreaEnum), nullable=False)
-    latitude = Column(Float)
-    longitude = Column(Float)
     address = Column(String)
     phone = Column(String)
 
+    area = relationship(
+        'EventLocationORM',
+        back_populates='location',
+        foreign_keys='[EventLocationORM.location_id]',
+        lazy='selectin'
+    )
+
+    def __repr__(self) -> str:
+        return f'<{self.__tablename__} {self.location_id} {self.name}>'
