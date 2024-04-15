@@ -14,6 +14,10 @@ _ListT = List[_T]
 _SetT = Set[_T]
 
 
+def format_datetime(value: datetime) -> str:
+    return value.strftime("%d.%m.%Y %H:%M")
+
+
 def all_in(params: _IterableT, data: _IterableT) -> bool:
     return all(p in data for p in params)
 
