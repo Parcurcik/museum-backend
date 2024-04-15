@@ -15,7 +15,7 @@ class AreaORM(BaseORM, DateORMMixin):
 
     area = relationship(
         'EventLocationORM',
-        back_populates='location',
+        back_populates='area',
         foreign_keys='[EventLocationORM.location_id]',
         lazy='selectin'
     )

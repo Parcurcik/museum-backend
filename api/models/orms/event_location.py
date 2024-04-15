@@ -12,7 +12,7 @@ class EventLocationORM(BaseORM, DateORMMixin):
 
     event = relationship(
         'EventORM',
-        back_populates='location',
+        back_populates='event_location',
         foreign_keys=[event_id],
         uselist=False,
         lazy='selectin'
@@ -20,7 +20,7 @@ class EventLocationORM(BaseORM, DateORMMixin):
 
     area = relationship(
         'AreaORM',
-        back_populates='events',
+        back_populates='area',
         foreign_keys=[location_id],
         uselist=False,
         lazy='selectin'

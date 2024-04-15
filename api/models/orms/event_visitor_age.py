@@ -9,7 +9,7 @@ from api.models.enums import VisitorAgeEnum
 class EventVisitorAgeORM(BaseORM, DateORMMixin):
     event_visitor_age_id = Column(BigInteger, primary_key=True)
     event_id = Column(ForeignKey('event.event_id', ondelete='CASCADE'), nullable=False)
-    age_name = Column(Enum(VisitorAgeEnum), nullable=False)
+    name = Column(Enum(VisitorAgeEnum), nullable=False)
 
     event = relationship(
         'EventORM',
@@ -21,4 +21,3 @@ class EventVisitorAgeORM(BaseORM, DateORMMixin):
 
     def __repr__(self) -> str:
         return f'<{self.__tablename__} {self.event_id} {self.visitor_age}>'
-

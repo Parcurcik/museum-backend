@@ -9,7 +9,7 @@ from api.models.enums import GenreEnum
 class EventGenreORM(BaseORM, DateORMMixin):
     event_genre_id = Column(BigInteger, primary_key=True)
     event_id = Column(ForeignKey('event.event_id', ondelete='CASCADE'), nullable=False)
-    genre = Column(Enum(GenreEnum), nullable=False)
+    name = Column(Enum(GenreEnum), nullable=False)
 
     event = relationship(
         'EventORM',
