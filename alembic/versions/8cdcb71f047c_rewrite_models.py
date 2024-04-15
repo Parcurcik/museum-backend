@@ -1,8 +1,8 @@
-"""rewrite event tables
+"""rewrite models
 
-Revision ID: efd88b09a4d1
+Revision ID: 8cdcb71f047c
 Revises: 
-Create Date: 2024-04-14 19:14:52.165008
+Create Date: 2024-04-15 10:17:53.945503
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'efd88b09a4d1'
+revision: str = '8cdcb71f047c'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -44,7 +44,7 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(), server_default=sa.text("TIMEZONE('ASIA/YEKATERINBURG', CURRENT_TIMESTAMP)"), nullable=False),
     sa.Column('event_genre_id', sa.BigInteger(), nullable=False),
     sa.Column('event_id', sa.BigInteger(), nullable=False),
-    sa.Column('genre', sa.Enum('excursion', 'master_class', 'spectacle', 'exhibition', 'interactive_lesson', 'concert', 'genealogy', 'lecture', 'creative_meeting', 'festival', 'artist_talk', 'film_screening', name='genreenum'), nullable=False),
+    sa.Column('name', sa.Enum('excursion', 'master_class', 'spectacle', 'exhibition', 'interactive_lesson', 'concert', 'genealogy', 'lecture', 'creative_meeting', 'festival', 'artist_talk', 'film_screening', name='genreenum'), nullable=False),
     sa.ForeignKeyConstraint(['event_id'], ['event.event_id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('event_genre_id')
     )
@@ -63,7 +63,7 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(), server_default=sa.text("TIMEZONE('ASIA/YEKATERINBURG', CURRENT_TIMESTAMP)"), nullable=False),
     sa.Column('event_visitor_age_id', sa.BigInteger(), nullable=False),
     sa.Column('event_id', sa.BigInteger(), nullable=False),
-    sa.Column('age_name', sa.Enum('adults', 'teenagers', 'kids', name='visitorageenum'), nullable=False),
+    sa.Column('name', sa.Enum('adults', 'teenagers', 'kids', name='visitorageenum'), nullable=False),
     sa.ForeignKeyConstraint(['event_id'], ['event.event_id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('event_visitor_age_id')
     )
