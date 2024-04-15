@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from api.configuration.routes import __routes__
 from api.internal.events import startup_event
+from api.internal.events import shutdown
 
 
 class Server:
@@ -17,6 +18,7 @@ class Server:
     @staticmethod
     def __register_events(app):
         app.on_event('startup')(startup_event)
+        app.on_event('shutdown')(shutdown)
 
     @staticmethod
     def __register_routes(app):
