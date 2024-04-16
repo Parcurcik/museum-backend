@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from pydantic import validator
 
@@ -16,11 +16,14 @@ class EventGenreCreate(BaseModel):
     genre: str
 
 
-class EventCreate(BaseModel):
+class AreaCreate(BaseModel):
     name: str
-    description: str
-    disabilities: Optional[bool]
-    started_at: datetime
+    address: str
+    phone: str
+
+
+class EventLocationCreate(BaseModel):
+    area: Optional[AreaCreate]
 
 
 class EventVisitorAgeGet(BaseModel):
@@ -67,3 +70,17 @@ class EventGet(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class EventCreate(BaseModel):
+    name: str
+    description: str
+    disabilities: Optional[bool]
+    started_at: datetime
+
+
+class EventUpdate(BaseModel):
+    name: Optional[str]
+    description: Optional[str]
+    disabilities: Optional[bool]
+    started_at: Optional[datetime]
