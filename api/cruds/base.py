@@ -4,7 +4,7 @@ from sqlalchemy import select, insert
 from api.models import BaseORM
 from api.utils.types import PKType, DictStrAny
 from api.configuration.database import Session
-from api.exceptions import ModelNotFoundError
+from api.exceptions import ModelNotFoundError, DeletionError
 
 
 class Base:
@@ -38,6 +38,24 @@ class Base:
             raise err
         setattr(object_, pk_name, pk_value)
         return object_
+
+    @classmethod
+    async def _before_delete(cls, object_: model) -> None:
+        pass
+
+    @classmethod
+    async def delete_object(cls, session: Session, object_: model) -> model:
+        if object_.can_delete:
+            await cls._before_delete(object_)
+            await session.delete(object_)
+        else:
+            raise DeletionError(cls.model.__tablename__, object_.get_pk_value())
+        return object_
+
+    @classmethod
+    async def delete(cls, session: Session, id_: PKType) -> model:
+        object_ = await cls.check_existence(session, id_)
+        return await cls.delete_object(session, object_)
 
 
 _BaseCRUDT = TypeVar('_BaseCRUDT', bound=Base)

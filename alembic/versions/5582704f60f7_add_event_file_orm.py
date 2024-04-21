@@ -1,8 +1,8 @@
-"""add files
+"""add event file orm
 
-Revision ID: e3a738181f7b
+Revision ID: 5582704f60f7
 Revises: dee77a46900d
-Create Date: 2024-04-21 13:04:06.541714
+Create Date: 2024-04-21 21:54:12.774531
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'e3a738181f7b'
+revision: str = '5582704f60f7'
 down_revision: Union[str, None] = 'dee77a46900d'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -30,7 +30,8 @@ def upgrade() -> None:
     sa.Column('s3_path', sa.String(), nullable=False),
     sa.Column('upload_date', sa.DateTime(), server_default=sa.text("TIMEZONE('ASIA/YEKATERINBURG', CURRENT_TIMESTAMP)"), nullable=False),
     sa.ForeignKeyConstraint(['event_id'], ['event.event_id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('event_logo_id')
+    sa.PrimaryKeyConstraint('event_logo_id'),
+    sa.UniqueConstraint('event_id')
     )
     # ### end Alembic commands ###
 
