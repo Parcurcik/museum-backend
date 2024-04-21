@@ -5,10 +5,13 @@ from pydantic import PositiveInt
 from fastapi import APIRouter, Depends, HTTPException, Path, UploadFile, File, Query
 
 from api import schemas
-from api.cruds import Event
-from api.dependencies import get_session
+from api.cruds import Event, EventFile
+from api.dependencies import get_session, get_image_with
 from api.configuration.database import Session
 from api.utils.types import ResponseType
+from api.utils.s3 import create_s3_url_by_path, delete_file_from_s3
+
+from api.utils.mime_types import IMAGE_BMP, IMAGE_JPG, IMAGE_PNG
 
 site_router = APIRouter(
     prefix='/event',
@@ -119,3 +122,52 @@ async def update_event_by_id(
     except Exception as err:
         raise err
     return event.__dict__
+
+
+@site_router.post(
+    '/{event_id}/logo/upload',
+    response_model=schemas.EventLogoCreate,
+    responses={
+        200: {'description': 'Success'},
+        404: {
+            'description': 'Not found',
+            'model': schemas.ModelNotFoundPublicError,
+        },
+        400: {
+            'description': 'Bad request',
+            'model': schemas.IncorrectFileTypePublicError
+                     | schemas.IncorrectFileSizePublicError
+                     | schemas.IncorrectImageSizePublicError,
+        },
+    },
+)
+async def upload_event_logo(
+        event_id: PositiveInt = Path(..., description='The identifier of event'),
+        event_logo: UploadFile = Depends(
+            get_image_with(
+                'event_card_logo',
+                ...,
+                content_types=(IMAGE_BMP, IMAGE_JPG, IMAGE_PNG),
+                description='Event card logo',
+            )
+        ),
+        session: Session = Depends(get_session),
+) -> ResponseType:
+    """Upload event card photo to S3"""
+    logo_s3_path = await EventFile.upload_file_on_s3(event_logo, True)
+    logo_url = create_s3_url_by_path(logo_s3_path)
+
+    try:
+        event_logo = await EventFile.create_and_save(
+            session,
+            {
+                'event_id': event_id,
+                'name': event_logo.filename,
+                'description': f'Event {event_id} logo',
+                's3_path': logo_url,
+            },
+        )
+    except Exception:
+        await EventFile.delete_file_from_s3(logo_url)
+        raise
+    return event_logo

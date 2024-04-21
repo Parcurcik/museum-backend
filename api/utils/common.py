@@ -3,6 +3,9 @@ from datetime import datetime, timedelta
 from inspect import iscoroutinefunction
 from typing import Any, AsyncGenerator, Awaitable, Callable, Iterable, List, Set, Tuple, TypeVar
 
+import cv2
+import numpy as np
+
 from fastapi import Request
 from starlette.responses import StreamingResponse
 
@@ -24,6 +27,10 @@ def all_in(params: _IterableT, data: _IterableT) -> bool:
 
 def any_in(params: _IterableT, data: _IterableT) -> bool:
     return any(p in data for p in params)
+
+
+def bytes2image(bytes_: bytes, is_color: bool = True) -> np.array:
+    return cv2.imdecode(np.frombuffer(bytes_, np.uint8), cv2.IMREAD_UNCHANGED if is_color else cv2.IMREAD_GRAYSCALE)
 
 
 def now() -> datetime:

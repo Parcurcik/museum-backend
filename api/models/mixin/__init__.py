@@ -1,5 +1,6 @@
-from .date import DateORMMixin
+from .date import DateORMMixin, ekt_now
 
 __all__ = (
-    'DateORMMixin'
+    'DateORMMixin',
+    ekt_now
 )

@@ -1,8 +1,9 @@
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
-from .cruds import ModelNotFoundError
+from .cruds import ModelNotFoundError, DeletionError, ModelIncorrectDataError
 from .common import ExceptionWithCode, UnknownError, extract_info
+from .routers import IncorrectFileSizeError, IncorrectFileTypeError, IncorrectImageSizeError
 
 
 def init(app: FastAPI) -> None:
@@ -13,6 +14,13 @@ def init(app: FastAPI) -> None:
             ModelNotFoundError()
             ):
                 status_code = status.HTTP_404_NOT_FOUND
+            case (
+            ModelIncorrectDataError()
+            | IncorrectFileSizeError()
+            | IncorrectFileTypeError()
+            | IncorrectImageSizeError()
+            ):
+                status_code = status.HTTP_400_BAD_REQUEST
         content = extract_info(request, exc)
         return JSONResponse(status_code=status_code, content=content)
 
@@ -26,5 +34,9 @@ def init(app: FastAPI) -> None:
 
 __all__ = (
     'ModelNotFoundError',
-    'init'
+    'init',
+    'IncorrectFileSizeError',
+    'IncorrectFileTypeError',
+    'IncorrectImageSizeError',
+    'DeletionError',
 )
