@@ -1,6 +1,7 @@
-from .event import EventGet, EventCreate, EventUpdate
+from .event import EventGet, EventCreate, EventUpdate, EventCardLogo
 from .error import BaseError, UnknownError, UnknownPublicError, ModelNotFoundError, ModelNotFoundPublicError, \
-    RequestValidationError
+    RequestValidationError, IncorrectFileSizeError, IncorrectFileSizePublicError, IncorrectFileTypePublicError, \
+    IncorrectFileTypeError, IncorrectImageSizePublicError, IncorrectImageSizeError
 
 __all__ = (
     'EventGet',
@@ -12,4 +13,11 @@ __all__ = (
     'ModelNotFoundError',
     'ModelNotFoundPublicError',
     'RequestValidationError',
+    'EventCardLogo',
+    'IncorrectFileSizeError',
+    'IncorrectFileSizePublicError',
+    'IncorrectFileTypePublicError',
+    'IncorrectFileTypeError',
+    'IncorrectImageSizeError',
+    'IncorrectImageSizePublicError',
 )

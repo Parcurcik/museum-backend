@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 
 from .cruds import ModelNotFoundError
 from .common import ExceptionWithCode, UnknownError, extract_info
+from .routers import IncorrectFileSizeError, IncorrectFileTypeError, IncorrectImageSizeError
 
 
 def init(app: FastAPI) -> None:
@@ -26,5 +27,8 @@ def init(app: FastAPI) -> None:
 
 __all__ = (
     'ModelNotFoundError',
-    'init'
+    'init',
+    'IncorrectFileSizeError',
+    'IncorrectFileTypeError',
+    'IncorrectImageSizeError',
 )

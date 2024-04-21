@@ -1,8 +1,8 @@
-from typing import Optional, List
+from typing import Optional
 from datetime import datetime
 from pydantic import validator
 
-from api.schemas.base import BaseModel
+from api.schemas.base import BaseModel, TrimModel
 from api.utils.common import format_datetime
 
 
@@ -84,3 +84,7 @@ class EventUpdate(BaseModel):
     description: Optional[str]
     disabilities: Optional[bool]
     started_at: Optional[datetime]
+
+
+class EventCardLogo(TrimModel):
+    logo_s3_url: str

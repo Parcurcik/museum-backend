@@ -10,6 +10,7 @@ from api.models import EventORM
 
 @with_model(EventORM)
 class Event(Base):
+
     @classmethod
     async def get_upcoming(cls, session: Session, quantity: int):
         query = select(EventORM).filter(EventORM.started_at > now()).order_by(
