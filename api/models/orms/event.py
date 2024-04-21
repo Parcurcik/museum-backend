@@ -37,3 +37,11 @@ class EventORM(BaseORM, DateORMMixin):
         uselist=True,
         lazy='selectin'
     )
+
+    files = relationship(
+        'EventFileORM',
+        back_populates='event',
+        foreign_keys='[EventFileORM.event_id]',
+        uselist=True,
+        lazy='selectin'
+    )

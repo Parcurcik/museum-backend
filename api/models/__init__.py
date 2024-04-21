@@ -7,17 +7,19 @@ from .orms import (
     EventGenreORM,
     EventLocationORM,
     EventVisitorAgeORM,
-    AreaORM
+    AreaORM,
+    EventFileORM
 )
 
 __all__ = (
     # base
     'BaseORM',
-    'DateORMMixin'
+    'DateORMMixin',
     # event
     'EventORM',
     'EventGenreORM',
     'EventLocationORM',
     'EventVisitorAgeORM',
-    'AreaORM'
+    'AreaORM',
+    'EventFileORM',
 )
