@@ -44,3 +44,10 @@ class IncorrectImageSizeError(ExceptionWithCode):
         self.min_size = (min_width, min_height)
         self.max_size = (max_width, max_height)
         self.aspect_ratio = (min_aspect_ratio, max_aspect_ratio)
+
+
+@with_schemas(schemas.PermissionDeniedError, schemas.PermissionDeniedPublicError)
+class PermissionDeniedError(ExceptionWithCode):
+    def __init__(self, detail: str, *args: Any) -> None:
+        super(PermissionDeniedError, self).__init__(detail, *args)
+        self.detail = detail

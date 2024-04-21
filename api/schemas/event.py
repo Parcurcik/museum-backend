@@ -56,6 +56,14 @@ class EventLocationGet(BaseModel):
         orm_mode = True
 
 
+class EventLogoGet(BaseModel):
+    description: str
+    s3_path: str
+
+    class Config:
+        orm_mode = True
+
+
 class EventGet(BaseModel):
     event_id: int
     name: str
@@ -65,6 +73,7 @@ class EventGet(BaseModel):
     visitor_age: Optional[list[EventVisitorAgeGet]]
     genre: Optional[list[EventGenreGet]]
     event_location: Optional[list[EventLocationGet]]
+    files: Optional[list[EventLogoGet]]
 
     _format_datetime = validator('started_at', allow_reuse=True)(format_datetime)
 
@@ -86,5 +95,11 @@ class EventUpdate(BaseModel):
     started_at: Optional[datetime]
 
 
-class EventCardLogo(TrimModel):
-    logo_s3_url: str
+class EventLogoCreate(BaseModel):
+    event_logo_id: int
+    name: str
+    description: str
+    s3_path: str
+
+    class Config(TrimModel.Config):
+        orm_mode = True

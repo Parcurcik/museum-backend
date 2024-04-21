@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, Column, ForeignKey, String, DateTime
+from sqlalchemy import BigInteger, Column, ForeignKey, String, DateTime, UniqueConstraint
 from sqlalchemy.orm import relationship
 from uuid import uuid4
 
@@ -9,6 +9,10 @@ from api.configuration.config import settings
 
 
 class EventFileORM(BaseORM, DateORMMixin):
+    __table_args__ = (
+        UniqueConstraint('event_id'),
+    )
+
     event_logo_id = Column(BigInteger, primary_key=True)
     event_id = Column(ForeignKey('event.event_id', ondelete='CASCADE'), nullable=False)
     name = Column(String, nullable=False)
@@ -30,5 +34,9 @@ class EventFileORM(BaseORM, DateORMMixin):
             [settings.S3_EVENT_FILES_DIR, f'{uuid4().hex}_{name}' if generate_prefix else name]
         )
 
+    @property
+    def can_delete(self) -> bool:
+        return True
+    
     def __repr__(self) -> str:
         return f'<{self.__tablename__} {self.event_id} {self.genre}>'

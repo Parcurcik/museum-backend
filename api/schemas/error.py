@@ -106,3 +106,12 @@ class IncorrectImageSizePublicError(BaseError):
 
 class IncorrectImageSizeError(IncorrectImageSizePublicError):
     pass
+
+
+@with_literal_default
+class PermissionDeniedPublicError(BaseError):
+    code: Literal[ErrorCode.permission_denied_error] = Field(..., description=_ERROR_CODE_DESCRIPTION)
+
+
+class PermissionDeniedError(PermissionDeniedPublicError, DetailError):
+    pass
