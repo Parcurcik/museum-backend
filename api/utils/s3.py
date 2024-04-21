@@ -15,3 +15,9 @@ async def upload_file_on_s3(path: str, file: UploadFile, public: bool = True) ->
     session = Session(aws_access_key_id=settings.S3_ACCESS_KEY, aws_secret_access_key=settings.S3_SECRET_KEY)
     async with session.client('s3', endpoint_url=settings.S3_URL) as s3:
         await s3.upload_fileobj(file, settings.S3_BUCKET, path, ExtraArgs=args)
+
+
+async def delete_file_from_s3(path: str) -> None:
+    session = Session(aws_access_key_id=settings.S3_ACCESS_KEY, aws_secret_access_key=settings.S3_SECRET_KEY)
+    async with session.client('s3', endpoint_url=settings.S3_URL) as s3:
+        await s3.delete_object(Bucket=settings.S3_BUCKET, Key=path)
