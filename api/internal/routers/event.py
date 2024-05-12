@@ -152,10 +152,10 @@ async def upload_event_logo(
         session: Session = Depends(get_session),
 ) -> ResponseType:
     """Upload event card photo to S3"""
+    event = Event.check_existence(session, event_id)
+
     logo_s3_path = await EventFile.upload_file_on_s3(event_logo, True)
     logo_url = create_s3_url_by_path(logo_s3_path)
-
-    event = await Event.check_existence(session, event_id)
 
     try:
         event_logo = await EventFile.create_and_save(
@@ -163,7 +163,7 @@ async def upload_event_logo(
             {
                 'event_id': event.event_id,
                 'name': event_logo.filename,
-                'description': f'Event {event_id} logo',
+                'description': f'Event {event.event_id} logo',
                 's3_path': logo_url,
             },
         )

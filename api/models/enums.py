@@ -23,9 +23,9 @@ class VisitorAgeEnum(str, Enum):
 
 
 class AreaEnum(str, Enum):
-    cachka_house = 'дом Качки'
-    metenkov_house = 'дом Метенкова'
-    l52 = 'креативный кластер "Л52"'
-    water_tower = 'водонапорная башня на плотинке'
-    makletsky_house = 'дом Маклецкого'
-    memorial_complex = 'мемориальный комплекс'
+    cachka_house = 'Дом Качки'
+    metenkov_house = 'Дом Метенкова'
+    l52 = 'Креативный кластер "Л52"'
+    water_tower = 'Водонапорная башня на плотинке'
+    makletsky_house = 'Дом Маклецкого'
+    memorial_complex = 'Мемориальный комплекс'

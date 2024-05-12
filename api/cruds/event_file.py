@@ -1,7 +1,8 @@
 from fastapi import UploadFile
-from api.cruds.base import Base, with_model
+from sqlalchemy import select
 
-from api.models import EventFileORM
+from api.cruds.base import Base, with_model
+from api.models import EventFileORM, EventORM
 from api.utils.s3 import upload_file_on_s3, delete_file_from_s3
 from api.configuration.database import Session
 
@@ -18,3 +19,8 @@ class EventFile(Base):
     @classmethod
     async def delete_file_from_s3(cls, s3_path: str) -> None:
         await delete_file_from_s3(s3_path)
+
+    @classmethod
+    async def get_by_event_id(cls, session: Session, event_id: int) -> EventORM | None:
+        query = select(cls.model).filter_by(event_id=event_id)
+        return await session.fetch_one(query)
