@@ -8,6 +8,7 @@ load_dotenv()
 
 class Settings(BaseSettings):
     # Base
+    WORKERS: int = 1
     PREFIX: str = '/api/v1'
     PORT: int = 8080
     RELOAD = True

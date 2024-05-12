@@ -1,5 +1,3 @@
-import asyncio
-import datetime
 from typing import Type, List
 from pydantic import PositiveInt
 from fastapi import APIRouter, Depends, HTTPException, Path, UploadFile, File, Query
@@ -157,11 +155,13 @@ async def upload_event_logo(
     logo_s3_path = await EventFile.upload_file_on_s3(event_logo, True)
     logo_url = create_s3_url_by_path(logo_s3_path)
 
+    event = await Event.check_existence(session, event_id)
+
     try:
         event_logo = await EventFile.create_and_save(
             session,
             {
-                'event_id': event_id,
+                'event_id': event.event_id,
                 'name': event_logo.filename,
                 'description': f'Event {event_id} logo',
                 's3_path': logo_url,
