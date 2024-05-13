@@ -9,6 +9,16 @@ from api.configuration.database import Session
 
 @with_model(EventFileORM)
 class EventFile(Base):
+    simple_columns_to_update = {
+        EventFileORM.name,
+        EventFileORM.description,
+        EventFileORM.s3_path,
+    }
+
+    fields_to_update = (
+        simple_columns_to_update
+
+    )
 
     @classmethod
     async def upload_file_on_s3(cls, file: UploadFile, public: bool, generate_prefix: bool = True) -> str:

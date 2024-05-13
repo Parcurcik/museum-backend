@@ -2,7 +2,8 @@ from .event import EventGet, EventCreate, EventUpdate, EventLogoCreate
 from .error import BaseError, UnknownError, UnknownPublicError, ModelNotFoundError, ModelNotFoundPublicError, \
     RequestValidationError, IncorrectFileSizeError, IncorrectFileSizePublicError, IncorrectFileTypePublicError, \
     IncorrectFileTypeError, IncorrectImageSizePublicError, IncorrectImageSizeError, PermissionDeniedPublicError, \
-    PermissionDeniedError
+    PermissionDeniedError, UnknownDBPublicError, UnknownDBError, OperationalPublicError, OperationalError, \
+    IntegrityPublicError, IntegrityError, IncorrectRelationObjectPublicError, IncorrectRelationObjectError
 
 __all__ = (
     'EventGet',
@@ -22,5 +23,7 @@ __all__ = (
     'IncorrectImageSizeError',
     'IncorrectImageSizePublicError',
     'PermissionDeniedPublicError',
-    'PermissionDeniedError'
+    'PermissionDeniedError',
+    'IncorrectRelationObjectPublicError',
+    'IncorrectRelationObjectPublicError'
 )

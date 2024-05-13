@@ -37,6 +37,6 @@ class EventFileORM(BaseORM, DateORMMixin):
     @property
     def can_delete(self) -> bool:
         return True
-    
+
     def __repr__(self) -> str:
-        return f'<{self.__tablename__} {self.event_id} {self.genre}>'
+        return f'<{self.__tablename__} {self.event_id} {self.event_logo_id} {self.s3_path}>'

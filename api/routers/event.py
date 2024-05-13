@@ -55,43 +55,43 @@ async def get_upcoming_events(
     return events
 
 
-@site_router.delete(
-    '/{event_id}',
-    status_code=204,
-    responses=swagger_responses,
-)
-async def delete_event_by_id(
-        event_id: PositiveInt = Path(..., description='The identifier of event'),
-        session: Session = Depends(get_session),
-) -> None:
-    """Delete event by identifier"""
-    event = await Event.check_existence(session, event_id)
-    try:
-        await session.delete(event)
-        await session.commit()
-    except Exception as err:
-        raise err
+# @site_router.delete(
+#     '/{event_id}',
+#     status_code=204,
+#     responses=swagger_responses,
+# )
+# async def delete_event_by_id(
+#         event_id: PositiveInt = Path(..., description='The identifier of event'),
+#         session: Session = Depends(get_session),
+# ) -> None:
+#     """Delete event by identifier"""
+#     event = await Event.check_existence(session, event_id)
+#     try:
+#         await session.delete(event)
+#         await session.commit()
+#     except Exception as err:
+#         raise err
 
 
-@site_router.post(
-    '',
-    response_model=schemas.EventGet,
-    status_code=201,
-    responses=swagger_responses,
-)
-async def create_event(
-        payload: schemas.EventCreate,
-        session: Session = Depends(get_session),
-) -> ResponseType:
-    """Create new event"""
-    data = payload.dict(exclude_unset=True)
-    try:
-
-        application = await Event.create_and_save(session, data)
-
-        return application.__dict__
-    except Exception as err:
-        raise err
+# @site_router.post(
+#     '',
+#     response_model=schemas.EventGet,
+#     status_code=201,
+#     responses=swagger_responses,
+# )
+# async def create_event(
+#         payload: schemas.EventCreate,
+#         session: Session = Depends(get_session),
+# ) -> ResponseType:
+#     """Create new event"""
+#     data = payload.dict(exclude_unset=True)
+#     try:
+#
+#         application = await Event.create_and_save(session, data)
+#
+#         return application.__dict__
+#     except Exception as err:
+#         raise err
 
 
 @site_router.patch(
@@ -141,7 +141,7 @@ async def update_event_by_id(
 )
 async def upload_event_logo(
         event_id: PositiveInt = Path(..., description='The identifier of event'),
-        event_logo: UploadFile = Depends(
+        event_logo_image: UploadFile = Depends(
             get_image_with(
                 'event_card_logo',
                 ...,
@@ -152,22 +152,28 @@ async def upload_event_logo(
         session: Session = Depends(get_session),
 ) -> ResponseType:
     """Upload event card photo to S3"""
-    event = Event.check_existence(session, event_id)
 
-    logo_s3_path = await EventFile.upload_file_on_s3(event_logo, True)
+    logo_s3_path = await EventFile.upload_file_on_s3(event_logo_image, True)
     logo_url = create_s3_url_by_path(logo_s3_path)
 
+    data = {
+        'name': event_logo_image.filename,
+        'description': f'Event {event_id} logo',
+        's3_path': logo_url,
+    }
+
     try:
-        event_logo = await EventFile.create_and_save(
-            session,
-            {
-                'event_id': event.event_id,
-                'name': event_logo.filename,
-                'description': f'Event {event.event_id} logo',
-                's3_path': logo_url,
-            },
-        )
+        existing_logo = await EventFile.get_by_event_id(session, event_id)
+        if existing_logo:
+            event_logo = await EventFile.update(session, data, existing_logo.event_logo_id)
+            await session.commit()
+        else:
+            data['event_id'] = event_id
+            event_logo = await EventFile.create_and_save(session, data)
+
     except Exception:
         await EventFile.delete_file_from_s3(logo_url)
+        await session.rollback()
         raise
+
     return event_logo

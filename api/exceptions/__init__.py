@@ -1,9 +1,23 @@
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
-from .cruds import ModelNotFoundError, DeletionError, ModelIncorrectDataError
+from .cruds import ModelNotFoundError, DeletionError, ModelIncorrectDataError, IncorrectRelationObjectError
 from .common import ExceptionWithCode, UnknownError, extract_info
 from .routers import IncorrectFileSizeError, IncorrectFileTypeError, IncorrectImageSizeError
+from .db import (CheckViolationError,
+                 ForeignKeyViolationError,
+                 NotNullViolationError,
+                 PSQLCheckViolationError,
+                 PSQLForeignKeyViolationError,
+                 PSQLIntegrityError,
+                 PSQLNotNullViolationError,
+                 PSQLUniqueViolationError,
+                 UniqueViolationError,
+                 get_info_from_check_violation_error,
+                 get_info_from_foreign_key_violation_error,
+                 get_info_from_not_null_violation_error,
+                 get_info_from_unique_violation_error,
+                 )
 
 
 def init(app: FastAPI) -> None:
@@ -39,4 +53,18 @@ __all__ = (
     'IncorrectFileTypeError',
     'IncorrectImageSizeError',
     'DeletionError',
+    'CheckViolationError',
+    'ForeignKeyViolationError',
+    'NotNullViolationError',
+    'PSQLCheckViolationError',
+    'PSQLForeignKeyViolationError',
+    'PSQLIntegrityError',
+    'PSQLNotNullViolationError',
+    'PSQLUniqueViolationError',
+    'UniqueViolationError',
+    'get_info_from_check_violation_error',
+    'get_info_from_foreign_key_violation_error',
+    'get_info_from_not_null_violation_error',
+    'get_info_from_unique_violation_error',
+    'IncorrectRelationObjectError',
 )
