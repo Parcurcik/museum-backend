@@ -11,8 +11,8 @@ class Settings(BaseSettings):
     WORKERS: int = 1
     HOST = 'localhost'
     PREFIX: str = '/api/v1'
-    PORT: int = 8080
-    RELOAD = True
+    PORT: int = 5000
+    RELOAD: bool = False
     # database
     DATABASE_URL: str = os.getenv('', 'DATABASE_URL')
     # S3
@@ -23,4 +23,19 @@ class Settings(BaseSettings):
     S3_URL: str = os.getenv('', 'S3_URL')
 
 
-settings = Settings()
+class LocalSettings(Settings):
+    RELOAD = True
+
+
+class DevSettings(Settings):
+    WORKERS: int = 4
+
+    HOST = ''
+
+
+settings_by_name = {
+    'dev': DevSettings,
+    'local': LocalSettings,
+}
+
+settings = settings_by_name[os.getenv('API_MODE') or 'local']()
