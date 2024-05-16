@@ -1,14 +1,15 @@
-from typing import Type, List
-from pydantic import PositiveInt
-from fastapi import APIRouter, Depends, HTTPException, Path, UploadFile, File, Query
+from typing import List
+from pydantic import PositiveInt, NonNegativeInt
+from fastapi import APIRouter, Depends, Path, UploadFile, Query, HTTPException
+import asyncpg
 
 from api import schemas
 from api.cruds import Event, EventFile
 from api.dependencies import get_session, get_image_with
 from api.configuration.database import Session
 from api.utils.types import ResponseType
-from api.utils.s3 import create_s3_url_by_path, delete_file_from_s3
-
+from api.utils.s3 import create_s3_url_by_path
+from api.search import search_events
 from api.utils.mime_types import IMAGE_BMP, IMAGE_JPG, IMAGE_PNG
 
 site_router = APIRouter(
@@ -42,7 +43,7 @@ async def get_event_by_id(
 
 @site_router.get(
     '/upcoming/',
-    response_model=List[schemas.EventGet],
+    response_model=List[schemas.ShallowEventGet],
     responses=swagger_responses,
 )
 async def get_upcoming_events(
@@ -53,6 +54,23 @@ async def get_upcoming_events(
     """Get upcoming events by quantity"""
     events = await Event.get_upcoming(session, quantity)
     return events
+
+
+@site_router.get(
+    's',
+    response_model=schemas.EventSearch,
+    responses=swagger_responses
+)
+async def get_events(
+        page: NonNegativeInt = Query(1, description='The search events page number'),
+        limit: NonNegativeInt = Query(10, description='The search events limit count'),
+        genre: List[schemas.GenreFilterType] = Query(None, description='The genre filter'),
+        area: List[schemas.AreaFilterType] = Query(None, description='The area filter'),
+        age: List[schemas.VisitorAgeFilterType] = Query(None, description='The age filter'),
+        disabilities: bool | None = Query(None, description='Can event take for people with disabilities'),
+        session: Session = Depends(get_session),
+) -> ResponseType:
+    return await search_events(session, page, limit, genre, age, area, disabilities)
 
 
 # @site_router.delete(
@@ -71,7 +89,6 @@ async def get_upcoming_events(
 #         await session.commit()
 #     except Exception as err:
 #         raise err
-
 
 # @site_router.post(
 #     '',
@@ -92,7 +109,6 @@ async def get_upcoming_events(
 #         return application.__dict__
 #     except Exception as err:
 #         raise err
-
 
 @site_router.patch(
     '/{event_id}',

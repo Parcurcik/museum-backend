@@ -8,7 +8,6 @@ from sqlalchemy.orm import InstrumentedAttribute, RelationshipProperty
 from sqlalchemy.sql.elements import BinaryExpression, BooleanClauseList, UnaryExpression
 from starlette.responses import Response
 
-
 ListAny = List[Any]
 TupleAny = Tuple[Any, ...]
 
@@ -63,6 +62,8 @@ ElasticsearchSortQuery = List[str | Dict[str, SortType] | DictStrAny]
 RangeFilterValue = int
 RangeFilterValueType = Type[int]
 RangeFilter = Dict[Literal['gte', 'gt', 'lte', 'lt'], RangeFilterValue] | None
+
+GenericAlias = type(list[int])
 
 
 class FileTypesForSearchDownloading(str, Enum):

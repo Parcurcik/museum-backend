@@ -1,9 +1,12 @@
-from .event import EventGet, EventCreate, EventUpdate, EventLogoCreate
+from .event import EventGet, EventCreate, EventUpdate, EventLogoCreate, ShallowEventGet, EventSearch, AreaFilterType, \
+    VisitorAgeFilterType, GenreFilterType
+from .entity import EventEntities, EventEntitiesTypes
 from .error import BaseError, UnknownError, UnknownPublicError, ModelNotFoundError, ModelNotFoundPublicError, \
     RequestValidationError, IncorrectFileSizeError, IncorrectFileSizePublicError, IncorrectFileTypePublicError, \
     IncorrectFileTypeError, IncorrectImageSizePublicError, IncorrectImageSizeError, PermissionDeniedPublicError, \
     PermissionDeniedError, UnknownDBPublicError, UnknownDBError, OperationalPublicError, OperationalError, \
-    IntegrityPublicError, IntegrityError, IncorrectRelationObjectPublicError, IncorrectRelationObjectError
+    IntegrityPublicError, IntegrityError, IncorrectRelationObjectPublicError, IncorrectRelationObjectError, \
+    PublicBaseInternalError, PublicDBInternalError
 
 __all__ = (
     'EventGet',
@@ -25,5 +28,14 @@ __all__ = (
     'PermissionDeniedPublicError',
     'PermissionDeniedError',
     'IncorrectRelationObjectPublicError',
-    'IncorrectRelationObjectPublicError'
+    'IncorrectRelationObjectPublicError',
+    'ShallowEventGet',
+    'EventSearch',
+    'EventEntities',
+    'PublicBaseInternalError',
+    'PublicDBInternalError',
+    'EventEntitiesTypes',
+    'AreaFilterType',
+    'VisitorAgeFilterType',
+    'GenreFilterType',
 )

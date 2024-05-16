@@ -1,6 +1,4 @@
-from typing import List
 from sqlalchemy import select
-import datetime
 
 from api.cruds.base import Base, with_model
 from api.configuration.database import Session

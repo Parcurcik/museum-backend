@@ -7,13 +7,13 @@ load_dotenv()
 
 
 class Settings(BaseSettings):
-    # Base
+    # base
     WORKERS: int = 1
     HOST = 'localhost'
     PREFIX: str = '/api/v1'
     PORT: int = 8080
     RELOAD = True
-    # DataBase
+    # database
     DATABASE_URL: str = os.getenv('', 'DATABASE_URL')
     # S3
     S3_EVENT_FILES_DIR: str = 'event'

@@ -77,6 +77,11 @@ class IncorrectFileTypeError(IncorrectFileTypePublicError):
     pass
 
 
+@with_literal_default
+class DataOriginChangePublicError(BaseError):
+    code: Literal[ErrorCode.data_origin_change_error] = Field(..., description=_ERROR_CODE_DESCRIPTION)
+
+
 class ImageAspectRatio(ConstrainedFloat):
     gt = 0
     le = 1
@@ -154,3 +159,7 @@ class IncorrectRelationObjectError(IncorrectRelationObjectPublicError):
     relation_key: str = Field(..., description='The name of relation where error was occurred')
     valid_object_cls: ListStr = Field(..., description='The name of valid classes for relation object')
     object_cls: str = Field(..., description='The name of relation object class')
+
+
+PublicBaseInternalError = UnknownPublicError | DataOriginChangePublicError
+PublicDBInternalError = UnknownDBPublicError | OperationalPublicError | IntegrityPublicError
