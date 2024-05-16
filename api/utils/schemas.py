@@ -1,5 +1,4 @@
 from typing import Literal, TypeVar, get_args, get_origin
-
 from pydantic import BaseModel
 from pydantic.fields import ModelField
 

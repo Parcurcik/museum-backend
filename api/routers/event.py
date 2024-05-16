@@ -1,14 +1,15 @@
-from typing import Type, List
-from pydantic import PositiveInt
-from fastapi import APIRouter, Depends, HTTPException, Path, UploadFile, File, Query
+from typing import List
+from pydantic import PositiveInt, NonNegativeInt
+from fastapi import APIRouter, Depends, Path, UploadFile, Query, HTTPException
+import asyncpg
 
 from api import schemas
 from api.cruds import Event, EventFile
 from api.dependencies import get_session, get_image_with
 from api.configuration.database import Session
 from api.utils.types import ResponseType
-from api.utils.s3 import create_s3_url_by_path, delete_file_from_s3
-
+from api.utils.s3 import create_s3_url_by_path
+from api.search import search_events
 from api.utils.mime_types import IMAGE_BMP, IMAGE_JPG, IMAGE_PNG
 
 site_router = APIRouter(
@@ -42,7 +43,7 @@ async def get_event_by_id(
 
 @site_router.get(
     '/upcoming/',
-    response_model=List[schemas.EventGet],
+    response_model=List[schemas.ShallowEventGet],
     responses=swagger_responses,
 )
 async def get_upcoming_events(
@@ -55,44 +56,59 @@ async def get_upcoming_events(
     return events
 
 
-@site_router.delete(
-    '/{event_id}',
-    status_code=204,
-    responses=swagger_responses,
+@site_router.get(
+    's',
+    response_model=schemas.EventSearch,
+    responses=swagger_responses
 )
-async def delete_event_by_id(
-        event_id: PositiveInt = Path(..., description='The identifier of event'),
-        session: Session = Depends(get_session),
-) -> None:
-    """Delete event by identifier"""
-    event = await Event.check_existence(session, event_id)
-    try:
-        await session.delete(event)
-        await session.commit()
-    except Exception as err:
-        raise err
-
-
-@site_router.post(
-    '',
-    response_model=schemas.EventGet,
-    status_code=201,
-    responses=swagger_responses,
-)
-async def create_event(
-        payload: schemas.EventCreate,
+async def get_events(
+        page: NonNegativeInt = Query(1, description='The search events page number'),
+        limit: NonNegativeInt = Query(10, description='The search events limit count'),
+        genre: List[schemas.GenreFilterType] = Query(None, description='The genre filter'),
+        area: List[schemas.AreaFilterType] = Query(None, description='The area filter'),
+        age: List[schemas.VisitorAgeFilterType] = Query(None, description='The age filter'),
+        disabilities: bool | None = Query(None, description='Can event take for people with disabilities'),
         session: Session = Depends(get_session),
 ) -> ResponseType:
-    """Create new event"""
-    data = payload.dict(exclude_unset=True)
-    try:
+    return await search_events(session, page, limit, genre, age, area, disabilities)
 
-        application = await Event.create_and_save(session, data)
 
-        return application.__dict__
-    except Exception as err:
-        raise err
+# @site_router.delete(
+#     '/{event_id}',
+#     status_code=204,
+#     responses=swagger_responses,
+# )
+# async def delete_event_by_id(
+#         event_id: PositiveInt = Path(..., description='The identifier of event'),
+#         session: Session = Depends(get_session),
+# ) -> None:
+#     """Delete event by identifier"""
+#     event = await Event.check_existence(session, event_id)
+#     try:
+#         await session.delete(event)
+#         await session.commit()
+#     except Exception as err:
+#         raise err
 
+# @site_router.post(
+#     '',
+#     response_model=schemas.EventGet,
+#     status_code=201,
+#     responses=swagger_responses,
+# )
+# async def create_event(
+#         payload: schemas.EventCreate,
+#         session: Session = Depends(get_session),
+# ) -> ResponseType:
+#     """Create new event"""
+#     data = payload.dict(exclude_unset=True)
+#     try:
+#
+#         application = await Event.create_and_save(session, data)
+#
+#         return application.__dict__
+#     except Exception as err:
+#         raise err
 
 @site_router.patch(
     '/{event_id}',
@@ -141,7 +157,7 @@ async def update_event_by_id(
 )
 async def upload_event_logo(
         event_id: PositiveInt = Path(..., description='The identifier of event'),
-        event_logo: UploadFile = Depends(
+        event_logo_image: UploadFile = Depends(
             get_image_with(
                 'event_card_logo',
                 ...,
@@ -152,22 +168,28 @@ async def upload_event_logo(
         session: Session = Depends(get_session),
 ) -> ResponseType:
     """Upload event card photo to S3"""
-    logo_s3_path = await EventFile.upload_file_on_s3(event_logo, True)
+
+    logo_s3_path = await EventFile.upload_file_on_s3(event_logo_image, True)
     logo_url = create_s3_url_by_path(logo_s3_path)
 
-    event = await Event.check_existence(session, event_id)
+    data = {
+        'name': event_logo_image.filename,
+        'description': f'Event {event_id} logo',
+        's3_path': logo_url,
+    }
 
     try:
-        event_logo = await EventFile.create_and_save(
-            session,
-            {
-                'event_id': event.event_id,
-                'name': event_logo.filename,
-                'description': f'Event {event_id} logo',
-                's3_path': logo_url,
-            },
-        )
+        existing_logo = await EventFile.get_by_event_id(session, event_id)
+        if existing_logo:
+            event_logo = await EventFile.update(session, data, existing_logo.event_logo_id)
+            await session.commit()
+        else:
+            data['event_id'] = event_id
+            event_logo = await EventFile.create_and_save(session, data)
+
     except Exception:
         await EventFile.delete_file_from_s3(logo_url)
+        await session.rollback()
         raise
+
     return event_logo

@@ -2,30 +2,30 @@ from enum import Enum
 
 
 class GenreEnum(str, Enum):
-    excursion = 'экскурсия'
-    master_class = 'мастер-класс'
-    spectacle = 'спектакль'
-    exhibition = 'выставка'
-    interactive_lesson = 'интерактивное занятие'
-    concert = 'концерт'
-    genealogy = 'мероприятие по генеалогии'
-    lecture = 'лекция'
-    creative_meeting = 'творческая встреча'
-    festival = 'фестиваль'
+    excursion = 'Экскурсия'
+    master_class = 'Мастер-класс'
+    spectacle = 'Спектакль'
+    exhibition = 'Выставка'
+    interactive_lesson = 'Интерактивное занятие'
+    concert = 'Концерт'
+    genealogy = 'Мероприятие по генеалогии'
+    lecture = 'Лекция'
+    creative_meeting = 'Творческая встреча'
+    festival = 'Фестиваль'
     artist_talk = 'Артист-ток'
-    film_screening = 'кинопоказ'
+    film_screening = 'Кинопоказ'
 
 
 class VisitorAgeEnum(str, Enum):
-    adults = 'взрослые'
-    teenagers = 'подростки'
-    kids = 'дети'
+    adults = 'Взрослые'
+    teenagers = 'Подростки'
+    kids = 'Дети'
 
 
 class AreaEnum(str, Enum):
-    cachka_house = 'дом Качки'
-    metenkov_house = 'дом Метенкова'
-    l52 = 'креативный кластер "Л52"'
-    water_tower = 'водонапорная башня на плотинке'
-    makletsky_house = 'дом Маклецкого'
-    memorial_complex = 'мемориальный комплекс'
+    cachka_house = 'Дом Качки'
+    metenkov_house = 'Дом Метенкова'
+    l52 = 'Креативный кластер "Л52"'
+    water_tower = 'Водонапорная башня на плотинке'
+    makletsky_house = 'Дом Маклецкого'
+    memorial_complex = 'Мемориальный комплекс'
