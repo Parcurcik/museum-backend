@@ -19,13 +19,5 @@ class TicketORM(BaseORM, DateORMMixin):
         lazy='selectin'
     )
 
-    price = relationship(
-        'TicketPriceORM',
-        back_populates='ticket',
-        foreign_keys='[TicketPriceORM.ticket_id]',
-        uselist=False,
-        lazy='selectin'
-    )
-
     def __repr__(self) -> str:
         return f'<{self.__tablename__} {self.ticket_id} {self.event_id}>'

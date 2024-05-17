@@ -105,7 +105,7 @@ class EventGet(BaseModel):
     visitor_age: Optional[list[EventVisitorAgeGet]]
     genre: Optional[list[EventGenreGet]]
     event_location: Optional[list[EventLocationGet]]
-    files: Optional[list[EventLogoGet]]
+    file: Optional[list[EventLogoGet]]
 
     # _format_datetime = validator('started_at', allow_reuse=True)(format_datetime)
 
