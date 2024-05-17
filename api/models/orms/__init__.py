@@ -6,7 +6,7 @@ from .event_visitor_age import EventVisitorAgeORM
 from .area import AreaORM
 from .event_logo import EventFileORM
 from .ticket import TicketORM
-from .ticket_price import EventPriceORM
+from .event_price import EventPriceORM
 
 __all__ = (
     'BaseORM',

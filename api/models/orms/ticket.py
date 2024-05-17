@@ -13,7 +13,7 @@ class TicketORM(BaseORM, DateORMMixin):
 
     event = relationship(
         'EventORM',
-        back_populates='ticket',
+        back_populates='ticket_date',
         foreign_keys=[event_id],
         uselist=False,
         lazy='selectin'

@@ -43,7 +43,7 @@ class EventORM(BaseORM, DateORMMixin):
         lazy='selectin'
     )
 
-    ticket = relationship(
+    ticket_date = relationship(
         'TicketORM',
         back_populates='event',
         foreign_keys='[TicketORM.event_id]',
@@ -51,7 +51,7 @@ class EventORM(BaseORM, DateORMMixin):
         lazy='selectin'
     )
 
-    prices = relationship(
+    ticket_price = relationship(
         'EventPriceORM',
         back_populates='event',
         foreign_keys='[EventPriceORM.event_id]',

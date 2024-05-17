@@ -13,7 +13,7 @@ class EventPriceORM(BaseORM):
 
     event = relationship(
         'EventORM',
-        back_populates='prices',
+        back_populates='ticket_price',
         foreign_keys=[event_id],
         uselist=False,
         lazy='selectin'

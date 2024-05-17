@@ -3,7 +3,7 @@ from datetime import datetime
 from pydantic import validator
 
 from api.schemas.base import BaseModel, TrimModel
-from api.utils.common import format_datetime
+from api.utils.common import format_datetime, format_datetime_with_timezone
 
 from enum import Enum
 
@@ -96,15 +96,35 @@ class EventLogoGet(BaseModel):
         orm_mode = True
 
 
+class EventPriceGet(BaseModel):
+    price_type: str
+    price: float
+
+    class Config:
+        orm_mode = True
+
+
+class TicketDateGet(BaseModel):
+    date: datetime
+
+    @validator('date', pre=True)
+    def format_datetime_with_timezone(cls, v):
+        return format_datetime_with_timezone(v)
+
+    class Config:
+        orm_mode = True
+
+
 class EventGet(BaseModel):
     event_id: int
     name: str
     description: str
     disabilities: Optional[bool]
-    started_at: datetime
     visitor_age: Optional[list[EventVisitorAgeGet]]
     genre: Optional[list[EventGenreGet]]
     event_location: Optional[list[EventLocationGet]]
+    ticket_date: Optional[list[TicketDateGet]]
+    ticket_price: Optional[list[EventPriceGet]]
     file: Optional[list[EventLogoGet]]
 
     # _format_datetime = validator('started_at', allow_reuse=True)(format_datetime)
@@ -117,12 +137,14 @@ class ShallowEventGet(BaseModel):
     event_id: int
     name: str
     disabilities: Optional[bool]
-    started_at: datetime
+    nearest_date: datetime
     event_location: Optional[list[EventLocationGet]]
-    files: Optional[list[EventLogoGet]]
+    file: Optional[list[EventLogoGet]]
 
-    # _format_datetime = validator('started_at', allow_reuse=True)(format_datetime)
-
+    @validator('nearest_date', pre=True)
+    def format_datetime_with_timezone(cls, v):
+        return format_datetime_with_timezone(v)
+    
     class Config:
         orm_mode = True
 

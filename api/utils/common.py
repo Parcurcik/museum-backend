@@ -17,6 +17,11 @@ _ListT = List[_T]
 _SetT = Set[_T]
 
 
+def format_datetime_with_timezone(value: datetime) -> str:
+    ekt_time = value + timedelta(hours=5)
+    return ekt_time.strftime("%Y-%m-%d %H:%M:%S")
+
+
 def format_datetime(value: datetime) -> str:
     return value.strftime("%d.%m.%Y %H:%M")
 
