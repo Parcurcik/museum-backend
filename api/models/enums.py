@@ -29,3 +29,9 @@ class AreaEnum(str, Enum):
     water_tower = 'Водонапорная башня на плотинке'
     makletsky_house = 'Дом Маклецкого'
     memorial_complex = 'Мемориальный комплекс'
+
+
+class TicketTypeEnum(str, Enum):
+    adult = 'Взрослый билет'
+    discount = 'Льготный билет'
+    child = 'Детский билет'

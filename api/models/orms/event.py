@@ -50,3 +50,11 @@ class EventORM(BaseORM, DateORMMixin):
         uselist=True,
         lazy='selectin'
     )
+
+    prices = relationship(
+        'EventPriceORM',
+        back_populates='event',
+        foreign_keys='[EventPriceORM.event_id]',
+        uselist=True,
+        lazy='selectin'
+    )
