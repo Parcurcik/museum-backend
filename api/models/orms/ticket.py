@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, Column, ForeignKey, DateTime, Float
+from sqlalchemy import BigInteger, Column, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
 from api.models.orms.base import BaseORM
@@ -10,13 +10,10 @@ class TicketORM(BaseORM, DateORMMixin):
     ticket_id = Column(BigInteger, primary_key=True)
     event_id = Column(ForeignKey('event.event_id', ondelete='CASCADE'), nullable=False)
     date = Column(DateTime(timezone=True), default=now, onupdate=now, nullable=False, server_default=ekt_now())
-    price_adult = Column(Float, nullable=False)
-    price_discount = Column(Float, nullable=False)
-    price_child = Column(Float, nullable=False)
 
     event = relationship(
         'EventORM',
-        back_populates='genre',
+        back_populates='ticket_date',
         foreign_keys=[event_id],
         uselist=False,
         lazy='selectin'

@@ -22,7 +22,7 @@ class EventFileORM(BaseORM, DateORMMixin):
 
     event = relationship(
         'EventORM',
-        back_populates='files',
+        back_populates='file',
         foreign_keys=[event_id],
         uselist=False,
         lazy='selectin'
