@@ -8,9 +8,11 @@ class EventEntities(TrimModel):
     area: Optional[Dict[str, str]]
     genre: Optional[Dict[str, str]]
     visitor_age: Optional[Dict[str, str]]
+    tags: Optional[Dict[str, str]]
 
 
 class EventEntitiesTypes(str, Enum):
     area = 'area'
     genre = 'genre'
     visitor_age = 'visitor_age'
+    tags = 'tags'

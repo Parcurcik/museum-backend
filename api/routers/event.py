@@ -9,7 +9,7 @@ from api.dependencies import get_session, get_image_with
 from api.configuration.database import Session
 from api.utils.types import ResponseType
 from api.utils.s3 import create_s3_url_by_path
-from api.search import search_events
+from api.search import search_events, search_individual_events
 from api.utils.mime_types import IMAGE_BMP, IMAGE_JPG, IMAGE_PNG
 
 site_router = APIRouter(
@@ -57,7 +57,7 @@ async def get_upcoming_events(
 
 
 @site_router.get(
-    's',
+    '/search/',
     response_model=schemas.EventSearch,
     responses=swagger_responses
 )
@@ -67,10 +67,27 @@ async def get_events(
         genre: List[schemas.GenreFilterType] = Query(None, description='The genre filter'),
         area: List[schemas.AreaFilterType] = Query(None, description='The area filter'),
         age: List[schemas.VisitorAgeFilterType] = Query(None, description='The age filter'),
-        disabilities: bool | None = Query(None, description='Can event take for people with disabilities'),
+        disabilities: bool = Query(None, description='Can event take for people with disabilities'),
         session: Session = Depends(get_session),
 ) -> ResponseType:
+    """Search events by filters"""
+
     return await search_events(session, page, limit, genre, age, area, disabilities)
+
+
+@site_router.get(
+    '/search_individual/',
+    response_model=schemas.EventSearch,
+    responses=swagger_responses
+)
+async def get_individual_events(
+        page: NonNegativeInt = Query(1, description='The search events page number'),
+        limit: NonNegativeInt = Query(10, description='The search events limit count'),
+        genre: List[schemas.GenreFilterType] = Query(None, description='The genre filter'),
+        tags: List[schemas.TagEventFilterType] = Query(None, description='User Tags filter'),
+        session: Session = Depends(get_session),
+) -> ResponseType:
+    return await search_individual_events(session, page, limit, genre, tags)
 
 
 # @site_router.delete(

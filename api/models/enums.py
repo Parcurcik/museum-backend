@@ -35,3 +35,22 @@ class TicketTypeEnum(str, Enum):
     adult = 'Взрослый билет'
     discount = 'Льготный билет'
     child = 'Детский билет'
+
+
+class TagEventEnum(str, Enum):
+    architecture = 'Архитектура'
+    literature = 'Литература'
+    science = 'Наука'
+    history_of_ussr = 'История СССР'
+    history_of_yekaterinburg = 'История Екатеринбурга'
+    poetry = 'Поэзия'
+    music = 'Музыка'
+    philosophy = 'Философия'
+    flora_and_fauna = 'Флора и фауны'
+    handmade = 'Ручная работа'
+    cinematography = 'Кинематограф'
+    cartoons = 'Мультфильмы'
+    tourism = 'Туризм'
+    genealogy = 'Генеалогия'
+    paleontology = 'Палеонтология'
+    archaeology = 'Археология'

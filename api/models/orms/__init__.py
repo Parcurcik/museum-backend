@@ -7,6 +7,7 @@ from .area import AreaORM
 from .event_logo import EventFileORM
 from .ticket import TicketORM
 from .event_price import EventPriceORM
+from .event_tag import EventTagORM
 
 __all__ = (
     'BaseORM',
@@ -18,4 +19,5 @@ __all__ = (
     'EventFileORM',
     'TicketORM',
     'EventPriceORM',
+    'EventTagORM'
 )
