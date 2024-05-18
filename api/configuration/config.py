@@ -30,8 +30,6 @@ class LocalSettings(Settings):
 class DevSettings(Settings):
     WORKERS: int = 4
 
-    HOST = ''
-
 
 settings_by_name = {
     'dev': DevSettings,

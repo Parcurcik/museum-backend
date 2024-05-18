@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  api:
+    build: .
+    image: ${image}:${tag}
+    restart: always
+    container_name: mus_api_${API_MODE}
+    env_file:
+      - ./.env
+    ports:
+      - ${PORT}:5000
