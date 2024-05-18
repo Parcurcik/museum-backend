@@ -4,7 +4,7 @@ from typing import List, Dict, Any
 
 from api import schemas
 from api.utils.types import ResponseType
-from api.models.enums import GenreEnum, VisitorAgeEnum, AreaEnum
+from api.models.enums import GenreEnum, VisitorAgeEnum, AreaEnum, TagEventEnum
 
 site_router = APIRouter(prefix='/entity', tags=['entity'])
 
@@ -41,7 +41,8 @@ async def get_event_entities(
     entity_mapping = {
         schemas.EventEntitiesTypes.area: AreaEnum,
         schemas.EventEntitiesTypes.genre: GenreEnum,
-        schemas.EventEntitiesTypes.visitor_age: VisitorAgeEnum
+        schemas.EventEntitiesTypes.visitor_age: VisitorAgeEnum,
+        schemas.EventEntitiesTypes.tags: TagEventEnum
     }
     for entity in set(entities):
         await _set_entity_result_from_enums(result, entity, entity_mapping)

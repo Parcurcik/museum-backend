@@ -38,6 +38,25 @@ class AreaFilterType(str, Enum):
     memorial_complex = 'memorial_complex'
 
 
+class TagEventFilterType(str, Enum):
+    architecture = 'architecture'
+    literature = 'literature'
+    science = 'science'
+    history_of_ussr = 'history_of_ussr'
+    history_of_yekaterinburg = 'history_of_yekaterinburg'
+    poetry = 'poetry'
+    music = 'music'
+    philosophy = 'philosophy'
+    flora_and_fauna = 'flora_and_fauna'
+    handmade = 'handmade'
+    cinematography = 'cinematography'
+    cartoons = 'cartoons'
+    tourism = 'tourism'
+    genealogy = 'genealogy'
+    paleontology = 'paleontology'
+    archaeology = 'archaeology'
+
+
 class EventVisitorAgeCreate(BaseModel):
     event_id: int
     age_name: str
@@ -144,7 +163,7 @@ class ShallowEventGet(BaseModel):
     @validator('nearest_date', pre=True)
     def format_datetime_with_timezone(cls, v):
         return format_datetime_with_timezone(v)
-    
+
     class Config:
         orm_mode = True
 

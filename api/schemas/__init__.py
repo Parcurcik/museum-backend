@@ -1,5 +1,5 @@
 from .event import EventGet, EventCreate, EventUpdate, EventLogoCreate, ShallowEventGet, EventSearch, AreaFilterType, \
-    VisitorAgeFilterType, GenreFilterType
+    VisitorAgeFilterType, GenreFilterType, TagEventFilterType
 from .entity import EventEntities, EventEntitiesTypes
 from .error import BaseError, UnknownError, UnknownPublicError, ModelNotFoundError, ModelNotFoundPublicError, \
     RequestValidationError, IncorrectFileSizeError, IncorrectFileSizePublicError, IncorrectFileTypePublicError, \
@@ -38,4 +38,5 @@ __all__ = (
     'AreaFilterType',
     'VisitorAgeFilterType',
     'GenreFilterType',
+    'TagEventFilterType'
 )

@@ -1,5 +1,6 @@
-from sqlalchemy import Column, ForeignKey, String, ARRAY, BigInteger
+from sqlalchemy import Column, ForeignKey, String, BigInteger
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.postgresql import ARRAY
 
 from api.models.orms.base import BaseORM
 

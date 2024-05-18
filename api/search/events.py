@@ -2,8 +2,22 @@ from sqlalchemy import select, func, or_
 import math
 
 from api.configuration.database import Session
-from api.models import EventORM, EventLocationORM
+from api.models import EventORM, EventLocationORM, EventTagORM
 from api.schemas import EventSearch
+
+
+async def _get_info_results(session, query, page, limit):
+    total_record_query = select(func.count()).select_from(query)
+    total_record = await session.execute(total_record_query)
+    total_record = total_record.scalar()
+
+    query = query.offset((page - 1) * limit).limit(limit)
+    events = await session.execute(query)
+    events = events.scalars().all()
+
+    total_pages = math.ceil(total_record / limit)
+
+    return total_record, events, total_pages
 
 
 async def search_events(
@@ -32,15 +46,35 @@ async def search_events(
         area_filters = [EventORM.visitor_age.any(name=age) for age in age]
         query = query.filter(or_(*area_filters))
 
-    total_record_query = select(func.count()).select_from(query)
-    total_record = await session.execute(total_record_query)
-    total_record = total_record.scalar()
+    total_record, events, total_pages = await _get_info_results(session, query, page, limit)
 
-    query = query.offset((page - 1) * limit).limit(limit)
-    events = await session.execute(query)
-    events = events.scalars().all()
+    return EventSearch(
+        page_number=page,
+        page_size=limit,
+        pages_total=total_pages,
+        total=total_record,
+        content=events
+    )
 
-    total_pages = math.ceil(total_record / limit)
+
+async def search_individual_events(
+        session: Session,
+        page: int = 1,
+        limit: int = 10,
+        genre: str = None,
+        tags: str = None,
+):
+    query = select(EventORM)
+
+    if genre:
+        genre_filters = [EventORM.genre.any(name=genre_name) for genre_name in genre]
+        query = query.filter(or_(*genre_filters))
+
+    if tags:
+        tags_filters = [EventTagORM.tags.contains([tag_name]) for tag_name in tags]
+        query = query.join(EventTagORM, EventORM.event_id == EventTagORM.event_id).filter(or_(*tags_filters))
+
+    total_record, events, total_pages = await _get_info_results(session, query, page, limit)
 
     return EventSearch(
         page_number=page,
