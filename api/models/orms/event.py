@@ -58,3 +58,11 @@ class EventORM(BaseORM, DateORMMixin):
         uselist=True,
         lazy='selectin'
     )
+
+    tags = relationship(
+        'EventTagORM',
+        back_populates='event',
+        foreign_keys='[EventTagORM.event_id]',
+        uselist=False,
+        lazy='selectin'
+    )
