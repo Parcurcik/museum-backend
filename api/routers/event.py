@@ -71,7 +71,6 @@ async def get_events(
         session: Session = Depends(get_session),
 ) -> ResponseType:
     """Search events by filters"""
-
     return await search_events(session, page, limit, genre, age, area, disabilities)
 
 
@@ -87,6 +86,7 @@ async def get_individual_events(
         tags: List[schemas.TagEventFilterType] = Query(None, description='User Tags filter'),
         session: Session = Depends(get_session),
 ) -> ResponseType:
+    """Search events by individual filters"""
     return await search_individual_events(session, page, limit, genre, tags)
 
 
@@ -179,19 +179,18 @@ async def upload_event_logo(
                 'event_card_logo',
                 ...,
                 content_types=(IMAGE_BMP, IMAGE_JPG, IMAGE_PNG),
-                description='Event card logo',
+                description='Event card image',
             )
         ),
         session: Session = Depends(get_session),
 ) -> ResponseType:
-    """Upload event card photo to S3"""
-
+    """Upload event card image"""
     logo_s3_path = await EventFile.upload_file_on_s3(event_logo_image, True)
     logo_url = create_s3_url_by_path(logo_s3_path)
 
     data = {
         'name': event_logo_image.filename,
-        'description': f'Event {event_id} logo',
+        'description': f'Event {event_id} image',
         's3_path': logo_url,
     }
 
