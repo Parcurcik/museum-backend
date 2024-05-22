@@ -1,4 +1,4 @@
-from sqlalchemy import BigInteger, Integer, Column, String, Float
+from sqlalchemy import BigInteger, Integer, Column, String, Float, Text
 from sqlalchemy.orm import relationship
 
 from api.models.mixin.date import DateORMMixin
@@ -10,7 +10,7 @@ class ExhibitORM(BaseORM, DateORMMixin):
     floor = Column(Integer)
     number = Column(Float)
     name = Column(String)
-    description = Column(String)
+    description = Column(Text)
 
     image = relationship(
         'ExhibitFileORM',
