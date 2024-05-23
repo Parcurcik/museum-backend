@@ -8,6 +8,8 @@ from .event_logo import EventFileORM
 from .ticket import TicketORM
 from .event_price import EventPriceORM
 from .event_tag import EventTagORM
+from .exhibition import ExhibitORM
+from .exhibition_logo import ExhibitFileORM
 
 __all__ = (
     'BaseORM',
@@ -19,5 +21,7 @@ __all__ = (
     'EventFileORM',
     'TicketORM',
     'EventPriceORM',
-    'EventTagORM'
+    'EventTagORM',
+    'ExhibitORM',
+    'ExhibitFileORM',
 )

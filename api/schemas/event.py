@@ -108,7 +108,6 @@ class EventLocationGet(BaseModel):
 
 
 class EventLogoGet(BaseModel):
-    description: str
     s3_path: str
 
     class Config:

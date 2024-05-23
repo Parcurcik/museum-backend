@@ -71,7 +71,6 @@ async def get_events(
         session: Session = Depends(get_session),
 ) -> ResponseType:
     """Search events by filters"""
-
     return await search_events(session, page, limit, genre, age, area, disabilities)
 
 
@@ -87,45 +86,49 @@ async def get_individual_events(
         tags: List[schemas.TagEventFilterType] = Query(None, description='User Tags filter'),
         session: Session = Depends(get_session),
 ) -> ResponseType:
+    """Search events by individual filters"""
     return await search_individual_events(session, page, limit, genre, tags)
 
 
-# @site_router.delete(
-#     '/{event_id}',
-#     status_code=204,
-#     responses=swagger_responses,
-# )
-# async def delete_event_by_id(
-#         event_id: PositiveInt = Path(..., description='The identifier of event'),
-#         session: Session = Depends(get_session),
-# ) -> None:
-#     """Delete event by identifier"""
-#     event = await Event.check_existence(session, event_id)
-#     try:
-#         await session.delete(event)
-#         await session.commit()
-#     except Exception as err:
-#         raise err
+@site_router.delete(
+    '/{event_id}',
+    status_code=204,
+    responses=swagger_responses,
+    
+)
+async def delete_event_by_id(
+        event_id: PositiveInt = Path(..., description='The identifier of event'),
+        session: Session = Depends(get_session),
+) -> None:
+    """Delete event by identifier"""
+    event = await Event.check_existence(session, event_id)
+    try:
+        await session.delete(event)
+        await session.commit()
+    except Exception as err:
+        raise err
 
-# @site_router.post(
-#     '',
-#     response_model=schemas.EventGet,
-#     status_code=201,
-#     responses=swagger_responses,
-# )
-# async def create_event(
-#         payload: schemas.EventCreate,
-#         session: Session = Depends(get_session),
-# ) -> ResponseType:
-#     """Create new event"""
-#     data = payload.dict(exclude_unset=True)
-#     try:
-#
-#         application = await Event.create_and_save(session, data)
-#
-#         return application.__dict__
-#     except Exception as err:
-#         raise err
+
+@site_router.post(
+    '',
+    response_model=schemas.EventGet,
+    status_code=201,
+    responses=swagger_responses,
+)
+async def create_event(
+        payload: schemas.EventCreate,
+        session: Session = Depends(get_session),
+) -> ResponseType:
+    """Create new event"""
+    data = payload.dict(exclude_unset=True)
+    try:
+
+        application = await Event.create_and_save(session, data)
+
+        return application.__dict__
+    except Exception as err:
+        raise err
+
 
 @site_router.patch(
     '/{event_id}',
@@ -179,19 +182,18 @@ async def upload_event_logo(
                 'event_card_logo',
                 ...,
                 content_types=(IMAGE_BMP, IMAGE_JPG, IMAGE_PNG),
-                description='Event card logo',
+                description='Event card image',
             )
         ),
         session: Session = Depends(get_session),
 ) -> ResponseType:
-    """Upload event card photo to S3"""
-
+    """Upload event card image"""
     logo_s3_path = await EventFile.upload_file_on_s3(event_logo_image, True)
     logo_url = create_s3_url_by_path(logo_s3_path)
 
     data = {
         'name': event_logo_image.filename,
-        'description': f'Event {event_id} logo',
+        'description': f'Event {event_id} image',
         's3_path': logo_url,
     }
 

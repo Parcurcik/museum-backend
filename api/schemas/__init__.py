@@ -7,6 +7,7 @@ from .error import BaseError, UnknownError, UnknownPublicError, ModelNotFoundErr
     PermissionDeniedError, UnknownDBPublicError, UnknownDBError, OperationalPublicError, OperationalError, \
     IntegrityPublicError, IntegrityError, IncorrectRelationObjectPublicError, IncorrectRelationObjectError, \
     PublicBaseInternalError, PublicDBInternalError
+from .exhibit import ExhibitLogoCreate, ExhibitGet, ExhibitCreate, ExhibitUpdate
 
 __all__ = (
     'EventGet',
@@ -38,5 +39,9 @@ __all__ = (
     'AreaFilterType',
     'VisitorAgeFilterType',
     'GenreFilterType',
-    'TagEventFilterType'
+    'TagEventFilterType',
+    'ExhibitLogoCreate',
+    'ExhibitGet',
+    'ExhibitCreate',
+    'ExhibitUpdate'
 )

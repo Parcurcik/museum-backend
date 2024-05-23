@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = os.getenv('', 'DATABASE_URL')
     # S3
     S3_EVENT_FILES_DIR: str = 'event'
+    S3_EXHIBIT_FILES_DIR: str = 'exhibit'
     S3_BUCKET: str = os.getenv('', 'S3_BUCKET')
     S3_ACCESS_KEY: str = os.getenv('', 'S3_ACCESS_KEY')
     S3_SECRET_KEY: str = os.getenv('', 'S3_SECRET_KEY')
