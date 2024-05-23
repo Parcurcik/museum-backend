@@ -11,7 +11,6 @@ class Event(Base):
 
     @classmethod
     async def get_upcoming(cls, session: Session, quantity: int):
-        # Subquery to find the nearest date for each event
         subquery = (
             select(TicketORM.event_id, func.min(TicketORM.date).label('nearest_date'))
             .filter(TicketORM.date > now())
@@ -21,7 +20,6 @@ class Event(Base):
             .subquery()
         )
 
-        # Main query to fetch events and their nearest dates
         query = (
             select(EventORM, subquery.c.nearest_date)
             .join(subquery, EventORM.event_id == subquery.c.event_id)

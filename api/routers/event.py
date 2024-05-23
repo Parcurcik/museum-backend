@@ -90,42 +90,44 @@ async def get_individual_events(
     return await search_individual_events(session, page, limit, genre, tags)
 
 
-# @site_router.delete(
-#     '/{event_id}',
-#     status_code=204,
-#     responses=swagger_responses,
-# )
-# async def delete_event_by_id(
-#         event_id: PositiveInt = Path(..., description='The identifier of event'),
-#         session: Session = Depends(get_session),
-# ) -> None:
-#     """Delete event by identifier"""
-#     event = await Event.check_existence(session, event_id)
-#     try:
-#         await session.delete(event)
-#         await session.commit()
-#     except Exception as err:
-#         raise err
+@site_router.delete(
+    '/{event_id}',
+    status_code=204,
+    responses=swagger_responses,
+)
+async def delete_event_by_id(
+        event_id: PositiveInt = Path(..., description='The identifier of event'),
+        session: Session = Depends(get_session),
+) -> None:
+    """Delete event by identifier"""
+    event = await Event.check_existence(session, event_id)
+    try:
+        await session.delete(event)
+        await session.commit()
+    except Exception as err:
+        raise err
 
-# @site_router.post(
-#     '',
-#     response_model=schemas.EventGet,
-#     status_code=201,
-#     responses=swagger_responses,
-# )
-# async def create_event(
-#         payload: schemas.EventCreate,
-#         session: Session = Depends(get_session),
-# ) -> ResponseType:
-#     """Create new event"""
-#     data = payload.dict(exclude_unset=True)
-#     try:
-#
-#         application = await Event.create_and_save(session, data)
-#
-#         return application.__dict__
-#     except Exception as err:
-#         raise err
+
+@site_router.post(
+    '',
+    response_model=schemas.EventGet,
+    status_code=201,
+    responses=swagger_responses,
+)
+async def create_event(
+        payload: schemas.EventCreate,
+        session: Session = Depends(get_session),
+) -> ResponseType:
+    """Create new event"""
+    data = payload.dict(exclude_unset=True)
+    try:
+
+        application = await Event.create_and_save(session, data)
+
+        return application.__dict__
+    except Exception as err:
+        raise err
+
 
 @site_router.patch(
     '/{event_id}',

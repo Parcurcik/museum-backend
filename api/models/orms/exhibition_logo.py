@@ -31,7 +31,7 @@ class ExhibitFileORM(BaseORM, DateORMMixin):
     @classmethod
     def create_s3_path(cls, name: str, generate_prefix: bool = True) -> str:
         return '/'.join(
-            [settings.S3_EVENT_FILES_DIR, f'{uuid4().hex}_{name}' if generate_prefix else name]
+            [settings.S3_EXHIBIT_FILES_DIR, f'{uuid4().hex}_{name}' if generate_prefix else name]
         )
 
     @property
@@ -39,4 +39,4 @@ class ExhibitFileORM(BaseORM, DateORMMixin):
         return True
 
     def __repr__(self) -> str:
-        return f'<{self.__tablename__} {self.event_id} {self.event_logo_id} {self.s3_path}>'
+        return f'<{self.__tablename__} {self.exhibit_id} {self.exhibit_logo_id} {self.s3_path}>'
