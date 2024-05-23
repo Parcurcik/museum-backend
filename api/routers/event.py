@@ -94,6 +94,7 @@ async def get_individual_events(
     '/{event_id}',
     status_code=204,
     responses=swagger_responses,
+    
 )
 async def delete_event_by_id(
         event_id: PositiveInt = Path(..., description='The identifier of event'),
