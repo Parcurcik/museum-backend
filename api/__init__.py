@@ -14,6 +14,7 @@ def _init_app() -> FastAPI:
     app = FastAPI(
         title='MUSEUM API',
         description='API for MUSEUM',
+        version=settings.VERSION,
         openapi_url=f'{settings.PREFIX}/openapi.json',
         docs_url=f'{settings.PREFIX}/docs',
         redoc_url=f'{settings.PREFIX}/redoc',

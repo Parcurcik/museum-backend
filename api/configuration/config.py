@@ -9,6 +9,7 @@ load_dotenv()
 class Settings(BaseSettings):
     # base
     WORKERS: int = 1
+    VERSION: str = os.getenv('1.0.0', 'VERSION')
     HOST = 'localhost'
     PREFIX: str = '/api/v1'
     PORT: int = 5000
