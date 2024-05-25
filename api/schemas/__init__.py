@@ -8,6 +8,7 @@ from .error import BaseError, UnknownError, UnknownPublicError, ModelNotFoundErr
     IntegrityPublicError, IntegrityError, IncorrectRelationObjectPublicError, IncorrectRelationObjectError, \
     PublicBaseInternalError, PublicDBInternalError
 from .exhibit import ExhibitLogoCreate, ExhibitGet, ExhibitCreate, ExhibitUpdate
+from .email import EmailGet, EmailCreate
 
 __all__ = (
     'EventGet',
