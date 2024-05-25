@@ -13,7 +13,8 @@ from .orms import (
     EventPriceORM,
     EventTagORM,
     ExhibitORM,
-    ExhibitFileORM
+    ExhibitFileORM,
+    EmailORM
 )
 
 __all__ = (
@@ -34,4 +35,6 @@ __all__ = (
     # exhibit
     'ExhibitORM',
     'ExhibitFileORM',
+    # email
+    'EmailORM'
 )
