@@ -54,3 +54,8 @@ class TagEventEnum(str, Enum):
     genealogy = 'Генеалогия'
     paleontology = 'Палеонтология'
     archaeology = 'Археология'
+
+
+class UserRoleEnum(str, Enum):
+    admin = 'admin'
+    employee = 'employee'

@@ -14,7 +14,9 @@ from .orms import (
     EventTagORM,
     ExhibitORM,
     ExhibitFileORM,
-    EmailORM
+    EmailORM,
+    UserORM,
+    UserRoleORM
 )
 
 __all__ = (
@@ -36,5 +38,8 @@ __all__ = (
     'ExhibitORM',
     'ExhibitFileORM',
     # email
-    'EmailORM'
+    'EmailORM',
+    # user
+    'UserORM',
+    'UserRoleORM',
 )
