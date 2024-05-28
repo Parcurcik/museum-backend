@@ -6,9 +6,10 @@ from .error import BaseError, UnknownError, UnknownPublicError, ModelNotFoundErr
     IncorrectFileTypeError, IncorrectImageSizePublicError, IncorrectImageSizeError, PermissionDeniedPublicError, \
     PermissionDeniedError, UnknownDBPublicError, UnknownDBError, OperationalPublicError, OperationalError, \
     IntegrityPublicError, IntegrityError, IncorrectRelationObjectPublicError, IncorrectRelationObjectError, \
-    PublicBaseInternalError, PublicDBInternalError
+    PublicBaseInternalError, PublicDBInternalError, BaseInternalError, DBInternalError
 from .exhibit import ExhibitLogoCreate, ExhibitGet, ExhibitCreate, ExhibitUpdate
 from .email import EmailGet, EmailCreate
+from .user import UserCreate, UserGet, Token, TokenData, BaseUser, Login
 
 __all__ = (
     'EventGet',
@@ -44,5 +45,12 @@ __all__ = (
     'ExhibitLogoCreate',
     'ExhibitGet',
     'ExhibitCreate',
-    'ExhibitUpdate'
+    'ExhibitUpdate',
+    'UserGet',
+    'UserCreate',
+    'TokenData',
+    'BaseUser',
+    'BaseInternalError',
+    'Login',
+    'DBInternalError',
 )

@@ -7,13 +7,15 @@ from api.routers import (
     event,
     entity,
     exhibit,
-    email
+    email,
+    auth
 )
 
 
 def init(app: FastAPI) -> None:
     router = APIRouter(prefix=app_settings.PREFIX, dependencies=[Depends(memorize_request_body)])
     modules = [
+        auth,
         event,
         exhibit,
         email,

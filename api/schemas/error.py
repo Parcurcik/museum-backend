@@ -161,5 +161,25 @@ class IncorrectRelationObjectError(IncorrectRelationObjectPublicError):
     object_cls: str = Field(..., description='The name of relation object class')
 
 
+@with_literal_default
+class DataOriginChangePublicError(BaseError):
+    code: Literal[ErrorCode.data_origin_change_error] = Field(..., description=_ERROR_CODE_DESCRIPTION)
+
+
+class DataOriginChangeError(DataOriginChangePublicError):
+    method: Literal['update', 'delete'] = Field(..., description='The data_origin model called method')
+
+
+@with_literal_default
+class OAuth2ServiceNotFoundPublicError(BaseError):
+    code: Literal[ErrorCode.oauth2_service_not_found_error] = Field(..., description=_ERROR_CODE_DESCRIPTION)
+
+
+class OAuth2ServiceNotFoundError(OAuth2ServiceNotFoundPublicError):
+    service: str = Field(..., description='The OAuth2 service that wasn`t found')
+
+
 PublicBaseInternalError = UnknownPublicError | DataOriginChangePublicError
 PublicDBInternalError = UnknownDBPublicError | OperationalPublicError | IntegrityPublicError
+BaseInternalError = UnknownError | DataOriginChangeError | OAuth2ServiceNotFoundError
+DBInternalError = UnknownDBError | OperationalError | IntegrityError

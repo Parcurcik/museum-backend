@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     RELOAD: bool = False
     # database
     DATABASE_URL: str = os.getenv('', 'DATABASE_URL')
+    # auth
+    JWT_SECRET_KEY: str = os.getenv('', 'JWT_SECRET_KEY')
+    JWT_ALGORITHM: str = os.getenv('', 'JWT_ALGORITHM')
+    JWT_TOKEN_EXPIRES: int = os.getenv('JWT_TOKEN_EXPIRES', 7)
     # S3
     S3_EVENT_FILES_DIR: str = 'event'
     S3_EXHIBIT_FILES_DIR: str = 'exhibit'
