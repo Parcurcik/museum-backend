@@ -5,6 +5,7 @@ from pydantic import ConstrainedFloat, Field, NonNegativeFloat, NonNegativeInt, 
 from api.utils.error_codes import ErrorCode
 from api.utils.schemas import with_literal_default
 from api.utils.types import TupleStr, ListStr
+from api.models.enums import UserRoleEnum
 from .base import TrimModel
 
 _ERROR_CODE_DESCRIPTION = 'The error code'
@@ -177,6 +178,13 @@ class OAuth2ServiceNotFoundPublicError(BaseError):
 
 class OAuth2ServiceNotFoundError(OAuth2ServiceNotFoundPublicError):
     service: str = Field(..., description='The OAuth2 service that wasn`t found')
+
+
+@with_literal_default
+class IncorrectUserRolesError(BaseError):
+    code: Literal[ErrorCode.incorrect_user_roles_error] = Field(..., description=_ERROR_CODE_DESCRIPTION)
+    roles: Tuple[UserRoleEnum, ...] = Field(..., description='The required roles')
+    all_required: bool = Field(..., description='Is all listed roles are required')
 
 
 PublicBaseInternalError = UnknownPublicError | DataOriginChangePublicError

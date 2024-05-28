@@ -17,7 +17,6 @@ class UserORM(BaseORM, DateORMMixin):
         'UserRoleORM',
         back_populates='user',
         foreign_keys='[UserRoleORM.user_id]',
-        uselist=False,
         lazy='selectin'
     )
 

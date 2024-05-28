@@ -5,12 +5,13 @@ import asyncpg
 
 from api import schemas
 from api.cruds import Event, EventFile
-from api.dependencies import get_session, get_image_with
+from api.dependencies import get_session, get_image_with, get_admin_user
 from api.configuration.database import Session
 from api.utils.types import ResponseType
 from api.utils.s3 import create_s3_url_by_path
 from api.search import search_events, search_individual_events
 from api.utils.mime_types import IMAGE_BMP, IMAGE_JPG, IMAGE_PNG
+from api.models import UserORM
 
 site_router = APIRouter(
     prefix='/event',
@@ -92,9 +93,10 @@ async def get_individual_events(
 
 @site_router.delete(
     '/{event_id}',
+    dependencies=[Depends(get_admin_user)],
     status_code=204,
     responses=swagger_responses,
-    
+
 )
 async def delete_event_by_id(
         event_id: PositiveInt = Path(..., description='The identifier of event'),
@@ -111,6 +113,7 @@ async def delete_event_by_id(
 
 @site_router.post(
     '',
+    dependencies=[Depends(get_admin_user)],
     response_model=schemas.EventGet,
     status_code=201,
     responses=swagger_responses,
@@ -132,6 +135,7 @@ async def create_event(
 
 @site_router.patch(
     '/{event_id}',
+    dependencies=[Depends(get_admin_user)],
     response_model=schemas.EventGet,
     responses=swagger_responses,
 )
@@ -160,6 +164,7 @@ async def update_event_by_id(
 
 @site_router.post(
     '/{event_id}/logo/upload',
+    dependencies=[Depends(get_admin_user)],
     response_model=schemas.EventLogoCreate,
     responses={
         200: {'description': 'Success'},
