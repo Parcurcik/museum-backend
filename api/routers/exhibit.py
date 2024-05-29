@@ -12,8 +12,8 @@ from api.utils.s3 import create_s3_url_by_path
 from api.utils.mime_types import IMAGE_BMP, IMAGE_JPG, IMAGE_PNG
 
 site_router = APIRouter(
-    prefix='/navigation',
-    tags=['navigation'])
+    prefix='/exhibit',
+    tags=['exhibit'])
 
 swagger_responses = {
     200: {'description': 'Success'},
@@ -27,7 +27,7 @@ swagger_responses = {
 
 
 @site_router.post(
-    '/exhibit/{exhibit_id}/logo/upload',
+    '/{exhibit_id}/logo/upload',
     dependencies=[Depends(get_admin_user)],
     response_model=schemas.ExhibitLogoCreate,
     responses={
@@ -97,7 +97,7 @@ async def get_exhibit_by_id(
 
 
 @site_router.post(
-    '/exhibit',
+    '',
     dependencies=[Depends(get_admin_user)],
     response_model=schemas.ExhibitGet,
     status_code=201,
@@ -167,7 +167,7 @@ async def update_exhibit_by_id(
 
 
 @site_router.get(
-    '/exhibits/',
+    '/all/',
     response_model=List[schemas.ExhibitGet],
     responses=swagger_responses,
 )
