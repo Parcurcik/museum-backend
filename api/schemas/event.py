@@ -157,6 +157,7 @@ class ShallowEventGet(BaseModel):
     disabilities: Optional[bool]
     nearest_date: datetime
     event_location: Optional[list[EventLocationGet]]
+    ticket_price: Optional[list[EventPriceGet]]
     file: Optional[list[EventLogoGet]]
 
     @validator('nearest_date', pre=True)
