@@ -145,10 +145,15 @@ class EventGet(BaseModel):
     ticket_price: Optional[list[EventPriceGet]]
     file: Optional[list[EventLogoGet]]
 
-    # _format_datetime = validator('started_at', allow_reuse=True)(format_datetime)
-
     class Config:
         orm_mode = True
+
+    @validator('ticket_date', pre=True, always=True)
+    def sort_ticket_date(cls, v):
+        if v:
+            v = [TicketDateGet(**item) if isinstance(item, dict) else item for item in v]
+            v.sort(key=lambda x: x.date)
+        return v
 
 
 class ShallowEventGet(BaseModel):
