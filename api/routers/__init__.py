@@ -6,16 +6,20 @@ from api.dependencies import memorize_request_body
 from api.routers import (
     event,
     entity,
-    exhibit
+    exhibit,
+    email,
+    auth
 )
 
 
 def init(app: FastAPI) -> None:
     router = APIRouter(prefix=app_settings.PREFIX, dependencies=[Depends(memorize_request_body)])
     modules = [
+        auth,
         event,
+        exhibit,
+        email,
         entity,
-        exhibit
     ]
     for module in modules:
         router.include_router(module.site_router)

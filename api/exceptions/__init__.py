@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 
 from .cruds import ModelNotFoundError, DeletionError, ModelIncorrectDataError, IncorrectRelationObjectError
 from .common import ExceptionWithCode, UnknownError, extract_info
-from .routers import IncorrectFileSizeError, IncorrectFileTypeError, IncorrectImageSizeError
+from .routers import IncorrectFileSizeError, IncorrectFileTypeError, IncorrectImageSizeError, IncorrectUserRolesError
 from .db import (CheckViolationError,
                  ForeignKeyViolationError,
                  NotNullViolationError,
@@ -45,6 +45,13 @@ def init(app: FastAPI) -> None:
             content=extract_info(request, UnknownError(exc)),
         )
 
+    @app.exception_handler(IncorrectUserRolesError)
+    def handle_incorrect_user_roles_error(request: Request, exc: IncorrectUserRolesError) -> JSONResponse:
+        return JSONResponse(
+            status_code=status.HTTP_403_FORBIDDEN,
+            content={"message": "Incorrect user roles"}
+        )
+
 
 __all__ = (
     'ModelNotFoundError',
@@ -67,4 +74,5 @@ __all__ = (
     'get_info_from_not_null_violation_error',
     'get_info_from_unique_violation_error',
     'IncorrectRelationObjectError',
+    'IncorrectUserRolesError'
 )

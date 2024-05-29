@@ -10,6 +10,9 @@ from .event_price import EventPriceORM
 from .event_tag import EventTagORM
 from .exhibition import ExhibitORM
 from .exhibition_logo import ExhibitFileORM
+from .email import EmailORM
+from .user import UserORM
+from .user_role import UserRoleORM
 
 __all__ = (
     'BaseORM',
@@ -24,4 +27,7 @@ __all__ = (
     'EventTagORM',
     'ExhibitORM',
     'ExhibitFileORM',
+    'EmailORM',
+    'UserORM',
+    'UserRoleORM',
 )

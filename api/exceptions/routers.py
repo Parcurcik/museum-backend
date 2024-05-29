@@ -1,7 +1,8 @@
 from typing import Any, Tuple
 
 from api.utils.types import TupleStr
-from .. import schemas
+from api.models.enums import UserRoleEnum
+from api import schemas
 from .common import ExceptionWithCode, with_schemas
 
 
@@ -51,3 +52,11 @@ class PermissionDeniedError(ExceptionWithCode):
     def __init__(self, detail: str, *args: Any) -> None:
         super(PermissionDeniedError, self).__init__(detail, *args)
         self.detail = detail
+
+
+@with_schemas(schemas.IncorrectUserRolesError, schemas.IncorrectUserRolesError)
+class IncorrectUserRolesError(PermissionDeniedError):
+    def __init__(self, roles: Tuple[UserRoleEnum, ...], all_required: bool = False) -> None:
+        super(IncorrectUserRolesError, self).__init__('Incorrect user roles', roles, all_required)
+        self.roles = roles
+        self.all_required = all_required
