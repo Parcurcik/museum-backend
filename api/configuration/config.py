@@ -42,6 +42,11 @@ class LocalSettings(Settings):
 
 class DevSettings(Settings):
     WORKERS: int = 4
+    CORS_ORIGINS: List[AnyHttpUrl] = [
+        "http://localhost:5173",
+        "http://музеум.рф",
+        "http://xn--e1adoc6ac.xn--p1ai"
+    ]
     CORS_ORIGIN_REGEX = r'(http:\/\/localhost:5173|http:\/\/музеум\.рф|http:\/\/127\.0\.0\.1:5000|http:\/\/xn--e1adoc6ac\.xn--p1ai)'
 
 

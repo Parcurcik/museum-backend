@@ -21,7 +21,7 @@ def _init_app() -> FastAPI:
         redoc_url=f'{settings.PREFIX}/redoc',
         swagger_ui_parameters={'docExpansion': 'none', 'displayRequestDuration': True, 'filter': True},
     )
-
+    
     if len(settings.CORS_ORIGINS) > 0 or settings.CORS_ORIGIN_REGEX is not None:
         app.add_middleware(
             CORSMiddleware,
