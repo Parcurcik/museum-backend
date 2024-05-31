@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
-
-from pydantic import BaseSettings
+from pydantic import BaseSettings, AnyHttpUrl
+from typing import List
 
 load_dotenv()
 
@@ -14,6 +14,8 @@ class Settings(BaseSettings):
     PREFIX: str = '/api/v1'
     PORT: int = 5000
     RELOAD: bool = False
+    CORS_ORIGINS: List[AnyHttpUrl] = []
+    CORS_ORIGIN_REGEX: str | None = None
     # database
     DATABASE_URL: str = os.getenv('', 'DATABASE_URL')
     # auth
@@ -40,6 +42,7 @@ class LocalSettings(Settings):
 
 class DevSettings(Settings):
     WORKERS: int = 4
+    CORS_ORIGIN_REGEX = r'(http:\/\/localhost:5173|http:\/\/музеум\.рф|http:\/\/127\.0\.0\.1:5000|http:\/\/xn--e1adoc6ac\.xn--p1ai)'
 
 
 settings_by_name = {

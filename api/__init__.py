@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from typing import Optional
+from fastapi.middleware.cors import CORSMiddleware
 
 from .exceptions import init as init_exceptions
 from api.configuration.config import settings
@@ -20,6 +21,17 @@ def _init_app() -> FastAPI:
         redoc_url=f'{settings.PREFIX}/redoc',
         swagger_ui_parameters={'docExpansion': 'none', 'displayRequestDuration': True, 'filter': True},
     )
+
+    if len(settings.CORS_ORIGINS) > 0 or settings.CORS_ORIGIN_REGEX is not None:
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=settings.CORS_ORIGINS,
+            allow_credentials=True,
+            allow_methods=['*'],
+            allow_headers=['*'],
+            allow_origin_regex=settings.CORS_ORIGIN_REGEX,
+        )
+
     init_exceptions(app)
     init_routers(app)
 
