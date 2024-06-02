@@ -43,3 +43,22 @@ async def add_email(
         return email.__dict__
     except Exception as err:
         raise err
+
+
+@site_router.post(
+    '/send',
+    response_model=None,
+    status_code=201,
+    responses=swagger_responses,
+)
+async def send_email(
+        session: Session = Depends(get_session),
+) -> ResponseType:
+    """Send email across schedule task"""
+
+    emails = await Email.get_all_emails(session)
+
+    # try:
+    #     html_content = generate_application(application_data_dict)
+    # except Exception as err:
+    #     raise err

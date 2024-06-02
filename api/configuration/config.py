@@ -30,10 +30,11 @@ class Settings(BaseSettings):
     S3_SECRET_KEY: str = os.getenv('', 'S3_SECRET_KEY')
     S3_URL: str = os.getenv('', 'S3_URL')
     # email
-    EMAIL_HOST: str = os.getenv('', 'EMAIL_HOST')
-    EMAIL_USERNAME: str = os.getenv('', 'EMAIL_USERNAME')
-    EMAIL_PASSWORD: str = os.getenv('', 'EMAIL_PASSWORD')
-    EMAIL_PORT: int = os.getenv('', 'EMAIL_PORT')
+    SMTP_HOST: str = os.getenv('', 'EMAIL_HOST')
+    SMTP_USERNAME: str = os.getenv('', 'EMAIL_USERNAME')
+    SMTP_PASSWORD: str = os.getenv('', 'EMAIL_PASSWORD')
+    SMTP_PORT: int = os.getenv('', 'EMAIL_PORT')
+    SMTP_SENDER: str = os.getenv('', 'SMTP_SENDER')
 
 
 class LocalSettings(Settings):
