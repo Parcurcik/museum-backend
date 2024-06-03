@@ -9,7 +9,7 @@ from api.dependencies import get_session, get_image_with, get_admin_user
 from api.configuration.database import Session
 from api.utils.types import ResponseType
 from api.utils.s3 import create_s3_url_by_path
-from api.search import search_events, search_individual_events
+from api.search import search_events, find_individual_events
 from api.utils.mime_types import IMAGE_BMP, IMAGE_JPG, IMAGE_PNG
 from api.models import UserORM
 
@@ -76,19 +76,17 @@ async def get_events(
 
 
 @site_router.get(
-    '/search_individual/',
-    response_model=schemas.EventSearch,
+    '/make_individual/',
+    response_model=List[schemas.EventGet],
     responses=swagger_responses
 )
 async def get_individual_events(
-        page: NonNegativeInt = Query(1, description='The search events page number'),
-        limit: NonNegativeInt = Query(10, description='The search events limit count'),
         genre: List[schemas.GenreFilterType] = Query(None, description='The genre filter'),
         tags: List[schemas.TagEventFilterType] = Query(None, description='User Tags filter'),
         session: Session = Depends(get_session),
 ) -> ResponseType:
     """Search events by individual filters"""
-    return await search_individual_events(session, page, limit, genre, tags)
+    return await find_individual_events(session, genre, tags)
 
 
 @site_router.delete(

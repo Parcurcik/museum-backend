@@ -1,6 +1,6 @@
-from .events import search_events, search_individual_events
+from .events import search_events, find_individual_events
 
 __all__ = (
     'search_events',
-    'search_individual_events'
+    'find_individual_events'
 )

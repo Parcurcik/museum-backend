@@ -57,10 +57,8 @@ async def search_events(
     )
 
 
-async def search_individual_events(
+async def find_individual_events(
         session: Session,
-        page: int = 1,
-        limit: int = 10,
         genre: str = None,
         tags: str = None,
 ):
@@ -74,12 +72,5 @@ async def search_individual_events(
         tags_filters = [EventTagORM.tags.contains([tag_name]) for tag_name in tags]
         query = query.join(EventTagORM, EventORM.event_id == EventTagORM.event_id).filter(or_(*tags_filters))
 
-    total_record, events, total_pages = await _get_info_results(session, query, page, limit)
-
-    return EventSearch(
-        page_number=page,
-        page_size=limit,
-        pages_total=total_pages,
-        total=total_record,
-        content=events
-    )
+    events = await session.execute(query)
+    return events.scalars().all()
