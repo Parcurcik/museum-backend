@@ -80,11 +80,7 @@ async def log_request_middleware(
     url = request.url.path + (f'?{request.url.query}' if len(request.url.query) > 0 else '')
     log_message = f'\ttime: {now()}\n\tmethod: {request.method} {url}\n'
     state = request.state
-    if not hasattr(state, 'user') or state.user["login_id"] == "301300":
-        log_message += '\tuser: anonymous\n'
-    else:
-        username = f'{state.user["surname"]} {state.user["name"]} {state.user["patronymic"]}'.strip()
-        log_message += f'\tuser: {state.user["login_type"].name}:{state.user["login_id"]} {username}\n'
+    
     if not hasattr(state, 'request_body') or state.request_body is None:
         log_message += '\tbody: null\n'
     else:
