@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .main {
+            width: 900px;
+            height: 808px;
+            display: flex;
+            align-items: center;
+        }
+
+        .leftImg {
+            width: 170px;
+            height: 808px;
+            margin-right: 30px;
+        }
+
+        .left-block {
+            margin-right: 50px;
+        }
+
+        .logo {
+            width: 129.999px;
+            height: 53.529px;
+            flex-shrink: 0;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            color: #000;
+            font-family: Lato;
+            font-size: 26px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            max-width: 200px;
+            margin-bottom: 30px;
+        }
+
+        .months {
+            color: #000;
+            font-family: Lato;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            padding: 5px 10px;
+            border: 2.5px solid #000;
+            max-width: 115px;
+            margin-bottom: 130px;
+        }
+
+        .vk, .tg {
+            width: 95px;
+            height: 94.28px;
+            margin-bottom: 1px;
+        }
+
+        .vk-text, .tg-text, .net-text {
+            margin-left: 11px;
+            color: #000;
+            font-family: Lato;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 300;
+            line-height: normal;
+        }
+
+        .vk-text {
+            width: 56px;
+        }
+
+        .tg-text {
+            width: 59px;
+        }
+
+        .net-text {
+            width: 57px;
+        }
+
+        .vk-block, .tg-block, .net-block {
+            width: 95px;
+        }
+
+        .link-block {
+            height: 358px;
+            width: 95px;
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        .pushkin-block {
+            display: inline-block;
+        }
+
+        .pushkin {
+            width: 65px;
+            height: 62px;
+        }
+
+        .pushkin-text {
+            color: #000;
+            font-family: Lato;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            width: 90px;
+            flex-shrink: 0;
+            margin-top: 10px;
+        }
+
+        .adress-block {
+            border: 1px solid black;
+            display: inline-block;
+        }
+
+        .card-1 {
+            position: relative;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .card-2 {
+            position: relative;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .card-3 {
+            position: relative;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .card-4 {
+            position: relative;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .event {
+            color: #000;
+            font-family: Lato;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            border-right: 1px solid black;
+            padding: 3px 10px 3px 15px;
+        }
+
+        .adress {
+            color: #000;
+            font-family: Lato;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            padding: 3px 25px 3px 10px;
+        }
+
+        .pushkin-card {
+            position: absolute;
+            right: -50px;
+            bottom: -15px;
+        }
+
+        .text-event {
+            color: #000;
+            font-family: Lato;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            width: 425px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .text-event:not(:last-child) {
+            margin-bottom: 10px;
+        }
+
+        .block:not(:last-child) {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <img src="https://storage.yandexcloud.net/mus/email/leftImage.jpg" alt="leftImg" class="leftImg">
+    <div class="left-block">
+        <img src="https://storage.yandexcloud.net/mus/email/logo.jpg" alt="logo" class="logo">
+        <h1 class="title">Ближайшие мероприятия</h1>
+        <h2 class="months">Июнь 2024 </h2>
+        <div class="link-block">
+            <div class="vk-block">
+                <img src="https://storage.yandexcloud.net/mus/email/vk.jpg" alt="vk" class="vk">
+                <p class="vk-text">Вконтакте</p>
+            </div>
+            <div class="vk-block">
+                <img src="https://storage.yandexcloud.net/mus/email/tg.jpg" alt="vk" class="tg">
+                <p class="tg-text">Телеграмм</p>
+            </div>
+            <div class="net-block">
+                <img src="http://qrcoder.ru/code/?http%3A%2F%2F%EC%F3%E7%E5%F3%EC.%F0%F4%2F&4&0" width="95" height="95"
+                     title="QR код">
+                <p class="net-text">Сайт МИЕ</p>
+            </div>
+        </div>
+        <div class="pushkin-block">
+            <img src="https://storage.yandexcloud.net/mus/email/pushkin.jpg" alt="pushkin" class="pushkin">
+            <p class="pushkin-text">Посетите музей по Пушкинской карте</p>
+        </div>
+    </div>
+    <div class="event-block">
+        {% for location in locations %}
+        <div class="block">
+            <div class="card">
+                <div class="adress-block">
+                    <span class="event">{{ location.location_name }}</span>
+                    <span class="adress">{{ location.location_address }}</span>
+                </div>
+                <img src="https://storage.yandexcloud.net/mus/email/pushkinPng.png" alt="pushkin" class="pushkin-card">
+            </div>
+            {% for event in location.events %}
+            <p class="text-event">{{ event.date }} | {{ event.event_name }}</p>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
