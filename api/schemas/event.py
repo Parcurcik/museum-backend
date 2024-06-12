@@ -4,7 +4,6 @@ from pydantic import validator
 
 from api.schemas.base import BaseModel, TrimModel
 from api.utils.common import format_datetime, format_datetime_with_timezone
-
 from enum import Enum
 
 
@@ -147,13 +146,6 @@ class EventGet(BaseModel):
 
     class Config:
         orm_mode = True
-
-    @validator('ticket_date', pre=True, always=True)
-    def sort_ticket_date(cls, v):
-        if v:
-            v = [TicketDateGet(**item) if isinstance(item, dict) else item for item in v]
-            v.sort(key=lambda x: x.date)
-        return v
 
 
 class ShallowEventGet(BaseModel):

@@ -80,7 +80,7 @@ async def log_request_middleware(
     url = request.url.path + (f'?{request.url.query}' if len(request.url.query) > 0 else '')
     log_message = f'\ttime: {now()}\n\tmethod: {request.method} {url}\n'
     state = request.state
-    
+
     if not hasattr(state, 'request_body') or state.request_body is None:
         log_message += '\tbody: null\n'
     else:
