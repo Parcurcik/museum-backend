@@ -144,6 +144,13 @@ class EventGet(BaseModel):
     ticket_price: Optional[list[EventPriceGet]]
     file: Optional[list[EventLogoGet]]
 
+    @validator('ticket_date', pre=True, always=True)
+    def sort_ticket_date(cls, v):
+        if v:
+            v = [TicketDateGet(**item) if isinstance(item, dict) else item for item in v]
+            v.sort(key=lambda x: x.date)
+        return v
+
     class Config:
         orm_mode = True
 
