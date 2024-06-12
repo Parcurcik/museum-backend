@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
-from typing import List, Dict, Any
+from fastapi.responses import JSONResponse
 
-from api.dependencies import get_session
+from api import schemas
+from api.dependencies import get_admin_user, get_session
 from api.configuration.database import Session
 from api.utils.types import ResponseType
-from api import schemas
-from api.cruds import Email
+from api.utils.html_renderer import generate_mailing
+from api.utils.email import send_mail
+from api.cruds import Email, Event
 
 site_router = APIRouter(prefix='/email', tags=['email'])
 
@@ -47,6 +49,7 @@ async def add_email(
 
 @site_router.post(
     '/send',
+    dependencies=[Depends(get_admin_user)],
     response_model=None,
     status_code=201,
     responses=swagger_responses,
@@ -54,11 +57,16 @@ async def add_email(
 async def send_email(
         session: Session = Depends(get_session),
 ) -> ResponseType:
-    """Send email across schedule task"""
+    """Send emails across schedule task"""
 
     emails = await Email.get_all_emails(session)
+    events = await Event.get_upcoming_events_by_location(session)
 
-    # try:
-    #     html_content = generate_application(application_data_dict)
-    # except Exception as err:
-    #     raise err
+    html_content = generate_mailing({'locations': events})
+
+    try:
+        send_mail(emails, html_content)
+        print(html_content)
+        return JSONResponse(status_code=200, content="Successfully sent mailing")
+    except Exception as err:
+        raise HTTPException(status_code=400, detail=str(err))
