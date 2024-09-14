@@ -1,9 +1,6 @@
-from .database import connect_db, create_session, disconnect_db
-from .session import Session
+from .database import create_session, disconnect_db
 
 __all__ = (
-    'connect_db',
-    'create_session',
-    'disconnect_db',
-    'Session'
+    "create_session",
+    "disconnect_db",
 )

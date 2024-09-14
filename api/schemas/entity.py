@@ -1,10 +1,9 @@
 from enum import Enum
 from typing import Dict, Optional
+from pydantic import BaseModel
 
-from .base import TrimModel
 
-
-class EventEntities(TrimModel):
+class EventEntities(BaseModel):
     area: Optional[Dict[str, str]]
     genre: Optional[Dict[str, str]]
     visitor_age: Optional[Dict[str, str]]
@@ -12,7 +11,7 @@ class EventEntities(TrimModel):
 
 
 class EventEntitiesTypes(str, Enum):
-    area = 'area'
-    genre = 'genre'
-    visitor_age = 'visitor_age'
-    tags = 'tags'
+    area = "area"
+    genre = "genre"
+    visitor_age = "visitor_age"
+    tags = "tags"

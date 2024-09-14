@@ -1,27 +1,19 @@
-from datetime import date, datetime
-from typing import Any
-
+from datetime import datetime, date
 from sqlalchemy import Column, DateTime
-from sqlalchemy.dialects.postgresql.psycopg2 import PGCompiler_psycopg2
-from sqlalchemy.ext.compiler import compiles
-from sqlalchemy.sql.functions import FunctionElement
-
-from api.utils.common import now
+from sqlalchemy.ext.declarative import declared_attr
+import pytz
 
 
-class ekt_now(FunctionElement):
-    type = DateTime()
-    inherit_cache = True
-
-
-@compiles(ekt_now, 'postgresql')
-def pg_ekb_now(element: ekt_now, compiler: PGCompiler_psycopg2, **kwargs: Any) -> str:
-    return 'TIMEZONE(\'ASIA/YEKATERINBURG\', CURRENT_TIMESTAMP)'
+def now(timezone_str: str = "Asia/Yekaterinburg") -> datetime:
+    tz = pytz.timezone(timezone_str)
+    return datetime.now(tz).replace(tzinfo=tz)
 
 
 class DateORMMixin:
-    created_at = Column(DateTime, default=now, nullable=False, server_default=ekt_now())
-    updated_at = Column(DateTime, default=now, onupdate=now, nullable=False, server_default=ekt_now())
+    created_at = Column(DateTime(timezone=True), default=lambda: now(), nullable=False)
+    updated_at = Column(
+        DateTime(timezone=True), default=lambda: now(), onupdate=lambda: now(), nullable=False
+    )
 
     @classmethod
     def now(cls) -> datetime:
@@ -30,7 +22,3 @@ class DateORMMixin:
     @classmethod
     def date_now(cls) -> date:
         return now().date()
-
-    @classmethod
-    def mos_now(cls) -> FunctionElement:
-        return ekt_now()

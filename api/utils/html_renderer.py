@@ -4,10 +4,12 @@ from jinja2 import Environment, FileSystemLoader
 
 
 class HTMLRenderer:
-    def __init__(self, template_folder: str = 'api/templates') -> None:
+    def __init__(self, template_folder: str = "api/templates") -> None:
         self.env = Environment(loader=FileSystemLoader(template_folder))
 
-    def render_template(self, context: Dict[str, Any], template_name: str = 'email.html') -> str:
+    def render_template(
+        self, context: Dict[str, Any], template_name: str = "email.html"
+    ) -> str:
         template = self.env.get_template(template_name)
         return template.render(context)
 

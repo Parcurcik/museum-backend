@@ -8,15 +8,12 @@ from api.models.enums import UserRoleEnum
 
 class UserRoleORM(BaseORM, DateORMMixin):
     user_role_id = Column(BigInteger, primary_key=True)
-    user_id = Column(ForeignKey('user.user_id', ondelete='CASCADE'), nullable=False)
+    user_id = Column(ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
     role = Column(Enum(UserRoleEnum), nullable=False)
 
     user = relationship(
-        'UserORM',
-        back_populates='roles',
-        foreign_keys=[user_id],
-        lazy='selectin'
+        "UserORM", back_populates="roles", foreign_keys=[user_id], lazy="selectin"
     )
 
     def __repr__(self) -> str:
-        return f'<{self.__tablename__} {self.user_id} {self.role.name}>'
+        return f"<{self.__tablename__} {self.user_id} {self.role.name}>"

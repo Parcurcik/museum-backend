@@ -1,8 +1,6 @@
 from typing import Optional
 from datetime import datetime
-from pydantic import validator
-
-from api.schemas.base import BaseModel, TrimModel
+from pydantic import validator, BaseModel
 
 
 class ExhibitLogoCreate(BaseModel):
@@ -10,9 +8,6 @@ class ExhibitLogoCreate(BaseModel):
     name: str
     description: str
     s3_path: str
-
-    class Config(TrimModel.Config):
-        orm_mode = True
 
 
 class ExhibitCreate(BaseModel):
@@ -43,6 +38,3 @@ class ExhibitGet(BaseModel):
     name: str
     description: str
     image: Optional[list[ExhibitImageGet]]
-
-    class Config(TrimModel.Config):
-        orm_mode = True

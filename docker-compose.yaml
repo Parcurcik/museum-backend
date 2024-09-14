@@ -10,3 +10,30 @@ services:
       - ./.env
     ports:
       - "80:5000"
+    networks:
+      - museum
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    networks:
+      - museum
+
+  redis:
+    image: redis
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}" ]
+    ports:
+      - "6379:6379"
+    networks:
+      - museum
+
+networks:
+  museum:
+    driver: bridge

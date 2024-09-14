@@ -1,6 +1,4 @@
-from api.schemas.base import BaseModel
-
-from pydantic import EmailStr
+from pydantic import EmailStr, BaseModel
 
 
 class EmailGet(BaseModel):
