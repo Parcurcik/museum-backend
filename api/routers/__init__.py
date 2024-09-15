@@ -7,10 +7,7 @@ from api.routers import auth, user
 
 def init(app: FastAPI) -> None:
     router = APIRouter(prefix=app_settings.PREFIX)
-    modules = [
-        auth,
-        user
-    ]
+    modules = [auth, user]
     for module in modules:
         router.include_router(module.site_router)
     app.include_router(router)

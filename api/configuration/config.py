@@ -57,6 +57,7 @@ class Settings(BaseSettings):
     API_URL: str = os.getenv("", "API_URL")
     INSTANCE_ID: str = os.getenv("", "INSTANCE_ID")
     API_TOKEN: str = os.getenv("", "API_TOKEN")
+    AUTH_MESSAGE_TEMPLATE: str = os.getenv("", "AUTH_MESSAGE_TEMPLATE")
 
 
 class LocalSettings(Settings):

@@ -19,7 +19,8 @@ class Base:
 
     @classmethod
     async def get_by_id(cls, session: AsyncSession, id_: int) -> BaseORM:
-        query = select(cls.model).where(cls.model.id == id_)
+        primary_key_column = inspect(cls.model).primary_key[0]
+        query = select(cls.model).where(primary_key_column == id_)
         result = await session.execute(query)
         obj = result.scalar_one_or_none()
         if obj is None:

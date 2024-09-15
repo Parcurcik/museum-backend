@@ -12,15 +12,35 @@ site_router = APIRouter(prefix="/user", tags=["user"])
 
 @site_router.get(
     "/me",
-    response_model=schemas.UserGet,
+    response_model=schemas.BaseUser,
     status_code=200,
     responses={
         200: {"description": "User information retrieved successfully"},
         401: {"description": "Unauthorized"},
-        500: {"description": "Internal server error"},
     },
 )
-async def get_current_user_data(
-        current_user: UserORM = Depends(get_current_user),
+async def get_current_user(
+    current_user: UserORM = Depends(get_current_user),
 ) -> Response:
     return current_user
+
+
+@site_router.put(
+    "",
+    response_model=schemas.BaseUser,
+    status_code=200,
+    responses={
+        200: {"description": "User information updated successfully"},
+        401: {"description": "Unauthorized"},
+        404: {"description": "User not found"},
+    },
+)
+async def update_current_user(
+    pyload: schemas.UserUpdate,
+    current_user: UserORM = Depends(get_current_user),
+    session: AsyncSession = Depends(db_helper.session_getter),
+) -> Response:
+    user_data = pyload.dict(exclude_unset=True)
+    updated_user = await User.update(session, current_user.user_id, user_data)
+
+    return updated_user

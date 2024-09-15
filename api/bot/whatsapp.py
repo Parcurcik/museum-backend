@@ -1,4 +1,5 @@
-import requests
+import httpx
+
 from api.configuration.config import settings
 
 
@@ -9,16 +10,14 @@ class WhatsAppBot:
         self.api_token = api_token
         self.api_url = settings.API_URL
 
-    def send_message(self, phone_number, message):
-        url = f"{self.api_url}/waInstance{self.instance_id}/sendMessage/{self.api_token}"
-        payload = {
-            "chatId": f"{phone_number}@c.us",
-            "message": message
-        }
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        response = requests.post(url, headers=headers, json=payload)
+    async def send_message(self, phone_number, message):
+        url = (
+            f"{self.api_url}/waInstance{self.instance_id}/sendMessage/{self.api_token}"
+        )
+        payload = {"chatId": f"{phone_number}@c.us", "message": message}
+        headers = {"Content-Type": "application/json"}
+        async with httpx.AsyncClient() as client:
+            response = await client.post(url, headers=headers, json=payload)
         return response.json()
 
 

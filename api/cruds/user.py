@@ -14,7 +14,9 @@ class User(Base):
         return result.scalars().first()
 
     @classmethod
-    async def get_user_by_phone(cls, session: AsyncSession, phone_number: str) -> UserORM:
+    async def get_user_by_phone(
+        cls, session: AsyncSession, phone_number: str
+    ) -> UserORM:
         query = select(UserORM).where(UserORM.number == phone_number)
         result = await session.execute(query)
         return result.scalars().first()

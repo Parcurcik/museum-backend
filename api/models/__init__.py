@@ -1,5 +1,5 @@
 from .mixin import DateORMMixin
-from .orms import BaseORM, UserORM, UserRoleORM
+from .orms import BaseORM, UserORM, UserRoleORM, RefreshTokenORM
 
 __all__ = (
     # base
@@ -8,4 +8,5 @@ __all__ = (
     # user
     "UserORM",
     "UserRoleORM",
+    "RefreshTokenORM",
 )

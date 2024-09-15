@@ -6,13 +6,16 @@ import pytz
 
 def now(timezone_str: str = "Asia/Yekaterinburg") -> datetime:
     tz = pytz.timezone(timezone_str)
-    return datetime.now(tz).replace(tzinfo=tz)
+    return datetime.now(tz)
 
 
 class DateORMMixin:
     created_at = Column(DateTime(timezone=True), default=lambda: now(), nullable=False)
     updated_at = Column(
-        DateTime(timezone=True), default=lambda: now(), onupdate=lambda: now(), nullable=False
+        DateTime(timezone=True),
+        default=lambda: now(),
+        onupdate=lambda: now(),
+        nullable=False,
     )
 
     @classmethod

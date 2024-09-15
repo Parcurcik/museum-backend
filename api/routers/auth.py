@@ -1,12 +1,22 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from datetime import datetime, UTC
+
+from api.configuration.config import settings
 from api import schemas
-from api.cruds import User
+from api.cruds import User, RefreshToken
 from api.configuration.database.db_helper import db_helper
-from api.utils.auth import generate_verification_code, create_tokens
+from api.utils.auth import (
+    generate_verification_code,
+    create_access_token,
+    create_refresh_token,
+)
 from api.service.redis import redis_service
 from api.bot.whatsapp import whatsapp_bot
+from api.dependencies import get_current_user
+from api.models import UserORM
 
 site_router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -22,15 +32,16 @@ site_router = APIRouter(prefix="/auth", tags=["auth"])
     },
 )
 async def send_code(
-        phone: schemas.PhoneNumberGet,
+    payload: schemas.PhoneNumberGet,
 ) -> Response:
     verification_code = await generate_verification_code()
-    await redis_service.redis.set(phone.number, verification_code, ex=300)
+    await redis_service.redis.set(payload.number, verification_code, ex=300)
 
-    # # response = whatsapp_bot.send_message(phone.number, f"Ваш код авторизации: {verification_code}")
-    #
-    # if response.get("status") != "success":
-    #     raise HTTPException(status_code=400, detail="Failed to send verification code")
+    message = settings.AUTH_MESSAGE_TEMPLATE.format(verification_code=verification_code)
+    response = await whatsapp_bot.send_message(payload.number, message)
+
+    if not response.get("idMessage"):
+        raise HTTPException(status_code=400, detail="Failed to send verification code")
 
     return {"code": verification_code}
 
@@ -47,20 +58,51 @@ async def send_code(
     },
 )
 async def verify_code(
-        login: schemas.LoginRequest,
-        session: AsyncSession = Depends(db_helper.session_getter),
+    payload: schemas.LoginRequestGet,
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Response:
-    # Проверка кода в Redis
-    stored_code = await redis_service.redis.get(login.number)
-    if stored_code is None or stored_code != login.code:
+    stored_code = await redis_service.redis.get(payload.number)
+    if stored_code is None or stored_code != payload.code:
         raise HTTPException(status_code=400, detail="Invalid verification code")
 
-    await redis_service.redis.delete(login.number)
+    await redis_service.redis.delete(payload.number)
 
-    user = await User.get_user_by_phone(session, login.number)
+    user = await User.get_user_by_phone(session, payload.number)
     if not user:
-        user = await User.create(session, {"number": login.number})
+        user = await User.create(session, {"number": payload.number})
 
-    access_token, refresh_token = create_tokens(user)
+    access = create_access_token(user)
+    refresh, expire_at = create_refresh_token(user)
 
-    return {"access_token": access_token, "refresh_token": refresh_token}
+    await RefreshToken.create(
+        session, {"user": user, "token": refresh, "expires": expire_at}
+    )
+
+    return {"access_token": access, "refresh_token": refresh}
+
+
+@site_router.post(
+    "/refresh",
+    response_model=schemas.RefreshTokenResponse,
+    status_code=200,
+    responses={
+        200: {"description": "Access token refreshed"},
+        401: {"description": "Invalid or expired refresh token"},
+    },
+)
+async def refresh_token(
+    payload: schemas.RefreshTokenGet,
+    session: AsyncSession = Depends(db_helper.session_getter),
+) -> Response:
+    stored_token = await RefreshToken.get_by_token(session, payload.refresh_token)
+
+    if not stored_token or stored_token.expires < datetime.now(UTC):
+        raise HTTPException(status_code=401, detail="Invalid refresh token")
+
+    user = await User.get_by_id(session, stored_token.user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
+        )
+
+    return {"access_token": create_access_token(user)}

@@ -1,8 +1,8 @@
 """add user models
 
-Revision ID: a32cfdd58e99
+Revision ID: d55ce2a668c3
 Revises: 
-Create Date: 2024-09-14 09:54:09.900203
+Create Date: 2024-09-15 17:09:05.192515
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "a32cfdd58e99"
+revision: str = "d55ce2a668c3"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -28,8 +28,8 @@ def upgrade() -> None:
         sa.Column("number", sa.String(), nullable=False),
         sa.Column("name", sa.String(), nullable=True),
         sa.Column("surname", sa.String(), nullable=True),
-        sa.Column("created_at", sa.DateTime(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(), nullable=False),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.PrimaryKeyConstraint("user_id", name=op.f("pk_user")),
         sa.UniqueConstraint("email", name=op.f("uq_user_email")),
         sa.UniqueConstraint("number", name=op.f("uq_user_number")),
@@ -39,7 +39,7 @@ def upgrade() -> None:
         sa.Column("token_id", sa.BigInteger(), nullable=False),
         sa.Column("user_id", sa.BigInteger(), nullable=False),
         sa.Column("token", sa.String(), nullable=False),
-        sa.Column("expiration", sa.DateTime(), nullable=False),
+        sa.Column("expires", sa.DateTime(timezone=True), nullable=False),
         sa.ForeignKeyConstraint(
             ["user_id"],
             ["user.user_id"],
@@ -57,8 +57,8 @@ def upgrade() -> None:
             sa.Enum("admin", "employee", "user", name="userroleenum"),
             nullable=False,
         ),
-        sa.Column("created_at", sa.DateTime(), nullable=False),
-        sa.Column("updated_at", sa.DateTime(), nullable=False),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.ForeignKeyConstraint(
             ["user_id"],
             ["user.user_id"],
@@ -75,4 +75,5 @@ def downgrade() -> None:
     op.drop_table("user_role")
     op.drop_table("refresh_token")
     op.drop_table("user")
+    op.execute("DROP TYPE IF EXISTS userroleenum")
     # ### end Alembic commands ###

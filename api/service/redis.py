@@ -10,7 +10,7 @@ class RedisService:
         self.redis = redis.from_url(
             f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}/{settings.REDIS_DB}",
             password=settings.REDIS_PASSWORD,
-            decode_responses=True
+            decode_responses=True,
         )
 
     async def set_code(self, phone_number: str, code: str, expire: int = 600) -> None:
