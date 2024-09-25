@@ -1,14 +1,5 @@
 from .event import (
-    EventGet,
-    EventCreate,
-    EventUpdate,
-    EventLogoCreate,
-    ShallowEventGet,
-    EventSearch,
-    AreaFilterType,
-    VisitorAgeFilterType,
-    GenreFilterType,
-    TagEventFilterType,
+    EventBase
 )
 from .entity import EventEntities, EventEntitiesTypes
 from .exhibit import ExhibitLogoCreate, ExhibitGet, ExhibitCreate, ExhibitUpdate
@@ -33,4 +24,5 @@ __all__ = (
     "RefreshTokenGet",
     "RefreshTokenResponse",
     "UserUpdate",
+    "EventBase"
 )
