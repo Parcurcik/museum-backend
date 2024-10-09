@@ -1,7 +1,6 @@
 from .event import (
     EventBase
 )
-from .entity import EventEntities, EventEntitiesTypes
 from .exhibit import ExhibitLogoCreate, ExhibitGet, ExhibitCreate, ExhibitUpdate
 from .email import EmailGet, EmailCreate
 from .user import UserGet, BaseUser, UserUpdate

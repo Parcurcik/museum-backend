@@ -1,13 +1,11 @@
 from .event import EventORM
 from .genre import EventGenreORM
-from .event_tag import EventTagORM
-from .location import EventLocationORM
-from .visitor_age import EventVisitorAgeORM
+from .tag import EventTagORM
+from .visitor_category import EventVisitorCategoryORM
 
 __all__ = (
     "EventORM",
     "EventGenreORM",
     "EventTagORM",
-    "EventLocationORM",
-    "EventVisitorAgeORM",
+    "EventVisitorCategoryORM",
 )

@@ -3,13 +3,13 @@ from sqlalchemy.orm import relationship
 
 from api.models.orms.base import BaseORM
 from api.models.mixin import DateORMMixin
-from api.models.enums import GenreEnum
+from api.models.enums import EventGenreEnum
 
 
 class EventGenreORM(BaseORM, DateORMMixin):
-    event_genre_id = Column(BigInteger, primary_key=True)
-    event_id = Column(ForeignKey("event.event_id", ondelete="CASCADE"), nullable=False)
-    name = Column(Enum(GenreEnum), nullable=False)
+    id = Column(BigInteger, primary_key=True)
+    event_id = Column(ForeignKey("event.id", ondelete="CASCADE"), nullable=False)
+    name = Column(Enum(EventGenreEnum), nullable=False)
 
     event = relationship(
         "EventORM",
@@ -20,4 +20,4 @@ class EventGenreORM(BaseORM, DateORMMixin):
     )
 
     def __repr__(self) -> str:
-        return f"<{self.__tablename__} {self.event_id} {self.genre}>"
+        return f"<{self.__tablename__} {self.event_id} {self.name}>"

@@ -3,17 +3,17 @@ from sqlalchemy.orm import relationship
 
 from api.models.mixin.date import DateORMMixin
 from api.models.orms.base import BaseORM
-from api.models.enums import VisitorAgeEnum
+from api.models.enums import VisitorCategoryEnum
 
 
-class EventVisitorAgeORM(BaseORM, DateORMMixin):
-    event_visitor_age_id = Column(BigInteger, primary_key=True)
-    event_id = Column(ForeignKey("event.event_id", ondelete="CASCADE"), nullable=False)
-    name = Column(Enum(VisitorAgeEnum), nullable=False)
+class EventVisitorCategoryORM(BaseORM, DateORMMixin):
+    id = Column(BigInteger, primary_key=True)
+    event_id = Column(ForeignKey("event.id", ondelete="CASCADE"), nullable=False)
+    name = Column(Enum(VisitorCategoryEnum), nullable=False)
 
     event = relationship(
         "EventORM",
-        back_populates="visitor_age",
+        back_populates="visitor_category",
         foreign_keys=[event_id],
         uselist=False,
         lazy="selectin",

@@ -18,16 +18,15 @@ from api.models.orms.base import BaseORM
 from api.models.enums import AreaEnum
 
 
-class AreaORM(BaseORM, DateORMMixin):
-    area_id = Column(BigInteger, primary_key=True)
+class LocationORM(BaseORM, DateORMMixin):
+    id = Column(BigInteger, primary_key=True)
     name = Column(Enum(AreaEnum), nullable=False)
     address = Column(String)
     phone = Column(String)
 
-    area = relationship(
-        "EventLocationORM",
-        back_populates="area",
-        foreign_keys="[EventLocationORM.location_id]",
+    events = relationship(
+        "EventORM",
+        back_populates="location",
         lazy="selectin",
     )
 

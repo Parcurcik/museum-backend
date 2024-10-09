@@ -1,8 +1,9 @@
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from pydantic import validator, BaseModel
-
 from enum import Enum
+
+from api.models.enums import EventGenreEnum
 
 
 class GenreFilterType(str, Enum):
@@ -55,7 +56,7 @@ class TagEventFilterType(str, Enum):
 
 
 class EventGenreBase(BaseModel):
-    name: GenreEnum
+    name: EventGenreEnum
 
     class Config:
         orm_mode = True
@@ -93,7 +94,6 @@ class EventBase(BaseModel):
     image_url: Optional[str]
     disabilities: bool
 
-    visitor_age: List[EventVisitorAgeBase]
     genre: List[EventGenreBase]
     event_location: List[EventLocationBase]
     tags: List[EventTagBase]

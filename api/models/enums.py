@@ -1,26 +1,25 @@
 from enum import Enum
 
 
-class GenreEnum(str, Enum):
-    excursion = "Экскурсия"
-    master_class = "Мастер-класс"
-    spectacle = "Спектакль"
-    exhibition = "Выставка"
-    interactive_lesson = "Интерактивное занятие"
-    concert = "Концерт"
-    genealogy = "Мероприятие по генеалогии"
-    lecture = "Лекция"
-    creative_meeting = "Творческая встреча"
-    festival = "Фестиваль"
-    artist_talk = "Артист-ток"
-    film_screening = "Кинопоказ"
+class EventGenreEnum(str, Enum):
+    excursion = 'Экскурсия'
+    master_class = 'Мастер-класс'
+    spectacle = 'Спектакль'
+    exhibition = 'Выставка'
+    interactive_lesson = 'Интерактивное занятие'
+    concert = 'Концерт'
+    genealogy = 'Мероприятие по генеалогии'
+    lecture = 'Лекция'
+    creative_meeting = 'Творческая встреча'
+    festival = 'Фестиваль'
+    artist_talk = 'Артист-ток'
+    film_screening = 'Кинопоказ'
 
 
-class VisitorAgeEnum(str, Enum):
-    adults = "Взрослые"
-    teenagers = "Подростки"
-    kids = "Дети"
-
+class VisitorCategoryEnum(str, Enum):
+    kids = 'Дети'
+    teenagers = 'Подростки'
+    adults = 'Взрослые'
 
 class AreaEnum(str, Enum):
     cachka_house = "Дом Качки"
