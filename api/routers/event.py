@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from api import schemas
 from api.cruds import User
-from api.configuration.database.db_helper import db_helper
+from api.dependencies import get_session
 from api.dependencies import get_current_user
 from api.models import UserORM
 
@@ -20,8 +20,8 @@ site_router = APIRouter(prefix="/event", tags=["event"])
     },
 )
 async def get_event_by_id(
-        session: AsyncSession = Depends(db_helper.session_getter),
-        event_id: PositiveInt = Path(..., description='The identifier of event to get'),
+    session: AsyncSession = Depends(get_session),
+    event_id: PositiveInt = Path(..., description="The identifier of event to get"),
 ) -> Response:
     event = Event.get_by_id(session, event_id)
     return event
@@ -38,9 +38,9 @@ async def get_event_by_id(
     },
 )
 async def update_current_user(
-        pyload: schemas.UserUpdate,
-        current_user: UserORM = Depends(get_current_user),
-        session: AsyncSession = Depends(db_helper.session_getter),
+    pyload: schemas.UserUpdate,
+    current_user: UserORM = Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
 ) -> Response:
     user_data = pyload.dict(exclude_unset=True)
     updated_user = await User.update(session, current_user.user_id, user_data)
@@ -59,9 +59,9 @@ async def update_current_user(
     },
 )
 async def update_current_user(
-        pyload: schemas.UserUpdate,
-        current_user: UserORM = Depends(get_current_user),
-        session: AsyncSession = Depends(db_helper.session_getter),
+    pyload: schemas.UserUpdate,
+    current_user: UserORM = Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
 ) -> Response:
     user_data = pyload.dict(exclude_unset=True)
     updated_user = await User.update(session, current_user.user_id, user_data)

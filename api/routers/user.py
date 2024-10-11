@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from api import schemas
 from api.cruds import User
-from api.configuration.database.db_helper import db_helper
+from api.dependencies import get_session
 from api.dependencies import get_current_user
 from api.models import UserORM
 
@@ -38,7 +38,7 @@ async def get_current_user(
 async def update_current_user(
     pyload: schemas.UserUpdate,
     current_user: UserORM = Depends(get_current_user),
-    session: AsyncSession = Depends(db_helper.session_getter),
+    session: AsyncSession = Depends(get_session),
 ) -> Response:
     user_data = pyload.dict(exclude_unset=True)
     updated_user = await User.update(session, current_user.user_id, user_data)
