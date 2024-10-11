@@ -15,12 +15,10 @@ from sqlalchemy.orm import relationship
 from api.models.mixin.date import DateORMMixin
 from api.models.orms.base import BaseORM
 
-from api.models.enums import AreaEnum
-
 
 class LocationORM(BaseORM, DateORMMixin):
     id = Column(BigInteger, primary_key=True)
-    name = Column(Enum(AreaEnum), nullable=False)
+    name = Column(String, nullable=False)
     address = Column(String)
     phone = Column(String)
 

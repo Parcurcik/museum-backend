@@ -11,7 +11,7 @@ class EventORM(BaseORM, DateORMMixin):
     description = Column(String)
     image_url = Column(String, nullable=True)
     disabilities = Column(Boolean, default=False)
-    location_id = Column(BigInteger, ForeignKey('area.area_id'), nullable=True)
+    location_id = Column(BigInteger, ForeignKey("location.id"), nullable=True)
 
     visitor_category = relationship(
         "EventVisitorAgeORM",

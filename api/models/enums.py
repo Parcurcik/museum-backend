@@ -2,32 +2,33 @@ from enum import Enum
 
 
 class EventGenreEnum(str, Enum):
-    excursion = 'Экскурсия'
-    master_class = 'Мастер-класс'
-    spectacle = 'Спектакль'
-    exhibition = 'Выставка'
-    interactive_lesson = 'Интерактивное занятие'
-    concert = 'Концерт'
-    genealogy = 'Мероприятие по генеалогии'
-    lecture = 'Лекция'
-    creative_meeting = 'Творческая встреча'
-    festival = 'Фестиваль'
-    artist_talk = 'Артист-ток'
-    film_screening = 'Кинопоказ'
+    excursion = "Экскурсия"
+    master_class = "Мастер-класс"
+    spectacle = "Спектакль"
+    exhibition = "Выставка"
+    interactive_lesson = "Интерактивное занятие"
+    concert = "Концерт"
+    genealogy = "Мероприятие по генеалогии"
+    lecture = "Лекция"
+    creative_meeting = "Творческая встреча"
+    festival = "Фестиваль"
+    artist_talk = "Артист-ток"
+    film_screening = "Кинопоказ"
 
 
 class VisitorCategoryEnum(str, Enum):
-    kids = 'Дети'
-    teenagers = 'Подростки'
-    adults = 'Взрослые'
+    kids = "Дети"
+    teenagers = "Подростки"
+    adults = "Взрослые"
 
-class AreaEnum(str, Enum):
-    cachka_house = "Дом Качки"
-    metenkov_house = "Дом Метенкова"
-    l52 = 'Креативный кластер "Л52"'
-    water_tower = "Водонапорная башня на плотинке"
-    makletsky_house = "Дом Маклецкого"
-    memorial_complex = "Мемориальный комплекс"
+
+# class AreaEnum(str, Enum):
+#     cachka_house = "Дом Качки"
+#     metenkov_house = "Дом Метенкова"
+#     l52 = 'Креативный кластер "Л52"'
+#     water_tower = "Водонапорная башня на плотинке"
+#     makletsky_house = "Дом Маклецкого"
+#     memorial_complex = "Мемориальный комплекс"
 
 
 class TicketTypeEnum(str, Enum):

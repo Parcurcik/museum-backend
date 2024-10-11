@@ -5,6 +5,7 @@ from sqlalchemy.orm import declared_attr
 from api.configuration.config import settings
 from api.utils.base import camel_case_to_snake_case
 
+
 class BaseORM(DeclarativeBase):
     __abstract__ = True
 

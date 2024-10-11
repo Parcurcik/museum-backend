@@ -8,7 +8,7 @@ from api.models.enums import TagEventEnum
 
 class EventTagORM(BaseORM):
     id = Column(BigInteger, primary_key=True)
-    event_id = Column(ForeignKey("event.event_id", ondelete="CASCADE"), nullable=False)
+    event_id = Column(ForeignKey("event.id", ondelete="CASCADE"), nullable=False)
     name = Column(Enum(TagEventEnum), nullable=False)
 
     event = relationship(
