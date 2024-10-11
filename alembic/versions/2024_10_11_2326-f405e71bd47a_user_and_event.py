@@ -1,8 +1,8 @@
 """user and event
 
-Revision ID: 636c5317cd37
+Revision ID: f405e71bd47a
 Revises: 
-Create Date: 2024-10-11 23:22:20.029646
+Create Date: 2024-10-11 23:26:41.274295
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "636c5317cd37"
+revision: str = "f405e71bd47a"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -62,7 +62,7 @@ def upgrade() -> None:
     )
     op.create_table(
         "refresh_token",
-        sa.Column("token_id", sa.BigInteger(), nullable=False),
+        sa.Column("id", sa.BigInteger(), nullable=False),
         sa.Column("user_id", sa.BigInteger(), nullable=False),
         sa.Column("token", sa.String(), nullable=False),
         sa.Column("expires", sa.DateTime(timezone=True), nullable=False),
@@ -71,12 +71,12 @@ def upgrade() -> None:
             ["user.id"],
             name=op.f("fk_refresh_token_user_id_user"),
         ),
-        sa.PrimaryKeyConstraint("token_id", name=op.f("pk_refresh_token")),
+        sa.PrimaryKeyConstraint("id", name=op.f("pk_refresh_token")),
         sa.UniqueConstraint("token", name=op.f("uq_refresh_token_token")),
     )
     op.create_table(
         "user_role",
-        sa.Column("user_role_id", sa.BigInteger(), nullable=False),
+        sa.Column("id", sa.BigInteger(), nullable=False),
         sa.Column("user_id", sa.BigInteger(), nullable=False),
         sa.Column(
             "role",
@@ -91,7 +91,7 @@ def upgrade() -> None:
             name=op.f("fk_user_role_user_id_user"),
             ondelete="CASCADE",
         ),
-        sa.PrimaryKeyConstraint("user_role_id", name=op.f("pk_user_role")),
+        sa.PrimaryKeyConstraint("id", name=op.f("pk_user_role")),
     )
     op.create_table(
         "event_genre",
