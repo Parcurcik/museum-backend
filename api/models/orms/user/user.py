@@ -10,7 +10,6 @@ class UserORM(BaseORM, DateORMMixin):
     email = Column(String, nullable=True, unique=True)
     number = Column(String, nullable=False, unique=True)
     name = Column(String, nullable=True)
-    surname = Column(String, nullable=True)
 
     roles = relationship(
         "UserRoleORM",
