@@ -1,8 +1,8 @@
-"""add event models
+"""user and event
 
-Revision ID: ec427d71299a
-Revises: d55ce2a668c3
-Create Date: 2024-10-11 22:27:57.113359
+Revision ID: 636c5317cd37
+Revises: 
+Create Date: 2024-10-11 23:22:20.029646
 
 """
 
@@ -13,8 +13,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "ec427d71299a"
-down_revision: Union[str, None] = "d55ce2a668c3"
+revision: str = "636c5317cd37"
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -32,6 +32,18 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id", name=op.f("pk_location")),
     )
     op.create_table(
+        "user",
+        sa.Column("id", sa.BigInteger(), nullable=False),
+        sa.Column("email", sa.String(), nullable=True),
+        sa.Column("number", sa.String(), nullable=False),
+        sa.Column("name", sa.String(), nullable=True),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
+        sa.PrimaryKeyConstraint("id", name=op.f("pk_user")),
+        sa.UniqueConstraint("email", name=op.f("uq_user_email")),
+        sa.UniqueConstraint("number", name=op.f("uq_user_number")),
+    )
+    op.create_table(
         "event",
         sa.Column("id", sa.BigInteger(), nullable=False),
         sa.Column("name", sa.String(), nullable=True),
@@ -47,6 +59,39 @@ def upgrade() -> None:
             name=op.f("fk_event_location_id_location"),
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_event")),
+    )
+    op.create_table(
+        "refresh_token",
+        sa.Column("token_id", sa.BigInteger(), nullable=False),
+        sa.Column("user_id", sa.BigInteger(), nullable=False),
+        sa.Column("token", sa.String(), nullable=False),
+        sa.Column("expires", sa.DateTime(timezone=True), nullable=False),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            ["user.id"],
+            name=op.f("fk_refresh_token_user_id_user"),
+        ),
+        sa.PrimaryKeyConstraint("token_id", name=op.f("pk_refresh_token")),
+        sa.UniqueConstraint("token", name=op.f("uq_refresh_token_token")),
+    )
+    op.create_table(
+        "user_role",
+        sa.Column("user_role_id", sa.BigInteger(), nullable=False),
+        sa.Column("user_id", sa.BigInteger(), nullable=False),
+        sa.Column(
+            "role",
+            sa.Enum("admin", "employee", "user", name="userroleenum"),
+            nullable=False,
+        ),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            ["user.id"],
+            name=op.f("fk_user_role_user_id_user"),
+            ondelete="CASCADE",
+        ),
+        sa.PrimaryKeyConstraint("user_role_id", name=op.f("pk_user_role")),
     )
     op.create_table(
         "event_genre",
@@ -143,6 +188,9 @@ def downgrade() -> None:
     op.drop_table("event_visitor_category")
     op.drop_table("event_tag")
     op.drop_table("event_genre")
+    op.drop_table("user_role")
+    op.drop_table("refresh_token")
     op.drop_table("event")
+    op.drop_table("user")
     op.drop_table("location")
     # ### end Alembic commands ###

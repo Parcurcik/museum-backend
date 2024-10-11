@@ -7,7 +7,7 @@ from api.models.orms.base import BaseORM
 
 class RefreshTokenORM(BaseORM):
     token_id = Column(BigInteger, primary_key=True)
-    user_id = Column(BigInteger, ForeignKey("user.user_id"), nullable=False)
+    user_id = Column(BigInteger, ForeignKey("user.id"), nullable=False)
     token = Column(String, nullable=False, unique=True)
     expires = Column(DateTime(timezone=True), nullable=False)
 
