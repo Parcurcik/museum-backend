@@ -7,7 +7,7 @@ from datetime import datetime, UTC
 from api.configuration.config import settings
 from api import schemas
 from api.cruds import User, RefreshToken
-from api.dependencies import get_session
+from api.configuration.database.db_helper import db_helper
 from api.utils.auth import (
     generate_verification_code,
     create_access_token,
@@ -17,7 +17,6 @@ from api.service.redis import redis_service
 from api.bot.whatsapp import whatsapp_bot
 from api.dependencies import get_current_user
 from api.models import UserORM
-
 
 site_router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -60,7 +59,7 @@ async def send_code(
 )
 async def verify_code(
     payload: schemas.LoginRequestGet,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Response:
     stored_code = await redis_service.redis.get(payload.number)
     if stored_code is None or stored_code != payload.code:
@@ -93,7 +92,7 @@ async def verify_code(
 )
 async def refresh_token(
     payload: schemas.RefreshTokenGet,
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Response:
     stored_token = await RefreshToken.get_by_token(session, payload.refresh_token)
 

@@ -14,9 +14,9 @@ class EventORM(BaseORM, DateORMMixin):
     location_id = Column(BigInteger, ForeignKey("location.id"), nullable=True)
 
     visitor_category = relationship(
-        "EventVisitorAgeORM",
+        "EventVisitorCategoryORM",
         back_populates="event",
-        foreign_keys="[EventVisitorAgeORM.event_id]",
+        foreign_keys="[EventVisitorCategoryORM.event_id]",
         uselist=True,
         lazy="selectin",
     )

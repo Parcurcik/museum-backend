@@ -1,8 +1,8 @@
 """add event models
 
-Revision ID: 965794ad2cda
+Revision ID: ec427d71299a
 Revises: d55ce2a668c3
-Create Date: 2024-10-11 21:54:36.268867
+Create Date: 2024-10-11 22:27:57.113359
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "965794ad2cda"
+revision: str = "ec427d71299a"
 down_revision: Union[str, None] = "d55ce2a668c3"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -30,13 +30,6 @@ def upgrade() -> None:
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_location")),
-    )
-    op.create_table(
-        "tag",
-        sa.Column("tag_id", sa.BigInteger(), nullable=False),
-        sa.Column("name", sa.String(), nullable=False),
-        sa.PrimaryKeyConstraint("tag_id", name=op.f("pk_tag")),
-        sa.UniqueConstraint("name", name=op.f("uq_tag_name")),
     )
     op.create_table(
         "event",
@@ -151,6 +144,5 @@ def downgrade() -> None:
     op.drop_table("event_tag")
     op.drop_table("event_genre")
     op.drop_table("event")
-    op.drop_table("tag")
     op.drop_table("location")
     # ### end Alembic commands ###
