@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class GenreEnum(str, Enum):
+class EventGenreEnum(str, Enum):
     excursion = "Экскурсия"
     master_class = "Мастер-класс"
     spectacle = "Спектакль"
@@ -16,19 +16,19 @@ class GenreEnum(str, Enum):
     film_screening = "Кинопоказ"
 
 
-class VisitorAgeEnum(str, Enum):
-    adults = "Взрослые"
-    teenagers = "Подростки"
+class VisitorCategoryEnum(str, Enum):
     kids = "Дети"
+    teenagers = "Подростки"
+    adults = "Взрослые"
 
 
-class AreaEnum(str, Enum):
-    cachka_house = "Дом Качки"
-    metenkov_house = "Дом Метенкова"
-    l52 = 'Креативный кластер "Л52"'
-    water_tower = "Водонапорная башня на плотинке"
-    makletsky_house = "Дом Маклецкого"
-    memorial_complex = "Мемориальный комплекс"
+# class AreaEnum(str, Enum):
+#     cachka_house = "Дом Качки"
+#     metenkov_house = "Дом Метенкова"
+#     l52 = 'Креативный кластер "Л52"'
+#     water_tower = "Водонапорная башня на плотинке"
+#     makletsky_house = "Дом Маклецкого"
+#     memorial_complex = "Мемориальный комплекс"
 
 
 class TicketTypeEnum(str, Enum):

@@ -1,8 +1,9 @@
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from pydantic import validator, BaseModel
-
 from enum import Enum
+
+from api.models.enums import EventGenreEnum
 
 
 class GenreFilterType(str, Enum):
@@ -54,125 +55,48 @@ class TagEventFilterType(str, Enum):
     archaeology = "archaeology"
 
 
-class EventVisitorAgeCreate(BaseModel):
-    event_id: int
-    age_name: str
-
-
-class EventGenreCreate(BaseModel):
-    event_id: int
-    genre: str
-
-
-class AreaCreate(BaseModel):
-    name: str
-    address: str
-    phone: str
-
-
-class EventLocationCreate(BaseModel):
-    area: Optional[AreaCreate]
-
-
-class EventVisitorAgeGet(BaseModel):
-    name: str
+class EventGenreBase(BaseModel):
+    name: EventGenreEnum
 
     class Config:
         orm_mode = True
 
 
-class EventGenreGet(BaseModel):
+class AreaBase(BaseModel):
+    name: str
+    address: Optional[str]
+    phone: Optional[str]
+
+    class Config:
+        orm_mode = True
+
+
+class EventLocationBase(BaseModel):
+    event_location_id: int
+    area: AreaBase
+
+    class Config:
+        orm_mode = True
+
+
+class EventTagBase(BaseModel):
+    tag_id: int
     name: str
 
     class Config:
         orm_mode = True
 
 
-class AreaGet(BaseModel):
-    name: str
-    address: str
-    phone: str
-
-    class Config:
-        orm_mode = True
-
-
-class EventLocationGet(BaseModel):
-    area: Optional[AreaGet]
-
-    class Config:
-        orm_mode = True
-
-
-class EventLogoGet(BaseModel):
-    s3_path: str
-
-    class Config:
-        orm_mode = True
-
-
-class EventPriceGet(BaseModel):
-    price_type: str
-    price: float
-
-    class Config:
-        orm_mode = True
-
-
-class EventGet(BaseModel):
+class EventBase(BaseModel):
     event_id: int
     name: str
     description: str
-    disabilities: Optional[bool]
-    visitor_age: Optional[list[EventVisitorAgeGet]]
-    genre: Optional[list[EventGenreGet]]
-    event_location: Optional[list[EventLocationGet]]
-    file: Optional[list[EventLogoGet]]
+    image_url: Optional[str]
+    disabilities: bool
+
+    genre: List[EventGenreBase]
+    event_location: List[EventLocationBase]
+    tags: List[EventTagBase]
 
     class Config:
         orm_mode = True
-
-
-class ShallowEventGet(BaseModel):
-    event_id: int
-    name: str
-    disabilities: Optional[bool]
-    nearest_date: datetime
-    event_location: Optional[list[EventLocationGet]]
-    file: Optional[list[EventLogoGet]]
-
-    @validator("nearest_date", pre=True)
-    def format_datetime_with_timezone(cls, v):
-        return format_datetime_with_timezone(v)
-
-    class Config:
-        orm_mode = True
-
-
-class EventCreate(BaseModel):
-    name: str
-    description: str
-    disabilities: Optional[bool]
-    started_at: datetime
-
-
-class EventUpdate(BaseModel):
-    name: Optional[str]
-    description: Optional[str]
-    disabilities: Optional[bool]
-    started_at: Optional[datetime]
-
-
-class EventLogoCreate(BaseModel):
-    event_logo_id: int
-    name: str
-    description: str
-    s3_path: str
-
-
-class EventSearch(BaseModel):
-    page_number: int
-    page_size: int
-    pages_total: int
-    total: int
-    content: list[EventGet]
