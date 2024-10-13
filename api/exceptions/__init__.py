@@ -16,7 +16,9 @@ def init_exception_handlers(app: FastAPI):
         )
 
     @app.exception_handler(RequestValidationError)
-    async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    async def validation_exception_handler(
+        request: Request, exc: RequestValidationError
+    ):
         return JSONResponse(
             status_code=422,
             content={"detail": exc.errors()},
@@ -28,7 +30,7 @@ def init_exception_handlers(app: FastAPI):
             status_code=400,
             content={
                 "message": "Error: Integrity constraint violation",
-                "detail": f"{exc.orig}"
+                "detail": f"{exc.orig}",
             },
         )
 
@@ -36,8 +38,5 @@ def init_exception_handlers(app: FastAPI):
     async def general_exception_handler(request: Request, exc: Exception):
         return JSONResponse(
             status_code=500,
-            content={
-                "message": "Internal Server Error",
-                "detail": str(exc)
-            },
+            content={"message": "Internal Server Error", "detail": str(exc)},
         )

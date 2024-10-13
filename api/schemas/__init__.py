@@ -53,5 +53,5 @@ __all__ = (
     "EventTagCreate",
     "EventTagUpdate",
     "EventTagBase",
-    "ErrorBase"
+    "ErrorBase",
 )

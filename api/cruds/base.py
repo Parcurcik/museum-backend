@@ -12,7 +12,9 @@ class Base:
 
     @classmethod
     async def create(cls, session: AsyncSession, data: Dict[str, Any]) -> BaseORM:
-        obj_data = {key: value for key, value in data.items() if not isinstance(value, list)}
+        obj_data = {
+            key: value for key, value in data.items() if not isinstance(value, list)
+        }
         obj = cls.model(**obj_data)
         session.add(obj)
         await session.commit()
@@ -21,7 +23,9 @@ class Base:
         for field, related_ids in data.items():
             if isinstance(related_ids, list):
                 related_model = getattr(cls.model, field).property.mapper.class_
-                related_objs = await session.execute(select(related_model).where(related_model.id.in_(related_ids)))
+                related_objs = await session.execute(
+                    select(related_model).where(related_model.id.in_(related_ids))
+                )
                 related_objs = related_objs.scalars().all()
 
                 setattr(obj, field, related_objs)
