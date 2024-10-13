@@ -3,6 +3,7 @@ from sqlalchemy import select, insert, inspect
 from sqlalchemy.orm import RelationshipProperty
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.exceptions.cruds import ModelNotFoundError
 from api.models import BaseORM
 
 
@@ -11,7 +12,6 @@ class Base:
 
     @classmethod
     async def create(cls, session: AsyncSession, data: Dict[str, Any]) -> BaseORM:
-        relationships = {}
         obj_data = {key: value for key, value in data.items() if not isinstance(value, list)}
         obj = cls.model(**obj_data)
         session.add(obj)

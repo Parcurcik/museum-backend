@@ -149,8 +149,9 @@ class EventCreate(BaseModel):
     disabilities: Optional[bool]
     location_id: Optional[int]
     genre_id: Optional[int]
-    visitor_category: Optional[List[int]]
-    tag: Optional[List[int]]
+
+    visitor_category: Optional[List[int]] = []
+    tag: Optional[List[int]] = []
 
 
 class EventUpdate(BaseModel):
@@ -160,5 +161,5 @@ class EventUpdate(BaseModel):
     disabilities: Optional[bool]
     location_id: Optional[int]
     genre_id: Optional[int]
-    visitor_category: Optional[List[int]]
-    tag: Optional[List[int]]
+    visitor_category: Optional[List[int]] = []
+    tag: Optional[List[int]] = []
