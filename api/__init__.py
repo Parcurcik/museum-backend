@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from api.configuration.config import settings
 from api.configuration.database import disconnect_db
 from api.service.redis import redis_service
+from api.exceptions import init_exception_handlers
 
 _app: Optional[FastAPI] = None
 
@@ -45,7 +46,7 @@ def _init_app() -> FastAPI:
         )
 
     init_routers(app)
-
+    init_exception_handlers(app)
     return app
 
 

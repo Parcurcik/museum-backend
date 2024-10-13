@@ -9,14 +9,19 @@ from api.models import UserORM
 
 site_router = APIRouter(prefix="/user", tags=["user"])
 
+response_codes = {
+    200: {"description": "Success"},
+    404: {"description": "Not found", "model": schemas.ErrorNotFound},
+    500: {"description": "Internal server error", "model": schemas.ErrorGeneral},
+}
+
 
 @site_router.get(
     "/me",
     response_model=schemas.BaseUser,
     status_code=200,
     responses={
-        200: {"description": "User information retrieved successfully"},
-        401: {"description": "Unauthorized"},
+        200: {"description": "Success"},
     },
 )
 async def get_current_user(
@@ -29,11 +34,7 @@ async def get_current_user(
     "",
     response_model=schemas.BaseUser,
     status_code=200,
-    responses={
-        200: {"description": "User information updated successfully"},
-        401: {"description": "Unauthorized"},
-        404: {"description": "User not found"},
-    },
+    responses=response_codes,
 )
 async def update_current_user(
     pyload: schemas.UserUpdate,

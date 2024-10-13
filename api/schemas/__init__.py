@@ -26,6 +26,7 @@ from .auth import (
     RefreshTokenGet,
     RefreshTokenResponse,
 )
+from .error import ErrorNotFound, ErrorGeneral
 
 __all__ = (
     "PhoneNumberGet",
@@ -52,4 +53,5 @@ __all__ = (
     "EventTagCreate",
     "EventTagUpdate",
     "EventTagBase",
+    "ErrorBase",
 )
