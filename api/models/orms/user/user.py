@@ -6,11 +6,10 @@ from api.models.mixin.date import DateORMMixin
 
 
 class UserORM(BaseORM, DateORMMixin):
-    user_id = Column(BigInteger, primary_key=True)
+    id = Column(BigInteger, primary_key=True)
     email = Column(String, nullable=True, unique=True)
     number = Column(String, nullable=False, unique=True)
     name = Column(String, nullable=True)
-    surname = Column(String, nullable=True)
 
     roles = relationship(
         "UserRoleORM",

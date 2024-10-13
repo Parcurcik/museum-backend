@@ -4,6 +4,7 @@ from pydantic import validator, BaseModel
 from enum import Enum
 
 from api.models.enums import EventGenreEnum
+from api.models.enums import VisitorCategoryEnum, EventGenreEnum, TagEventEnum
 
 
 class GenreFilterType(str, Enum):
@@ -55,14 +56,8 @@ class TagEventFilterType(str, Enum):
     archaeology = "archaeology"
 
 
-class EventGenreBase(BaseModel):
-    name: EventGenreEnum
-
-    class Config:
-        orm_mode = True
-
-
-class AreaBase(BaseModel):
+class LocationBase(BaseModel):
+    id: int
     name: str
     address: Optional[str]
     phone: Optional[str]
@@ -71,16 +66,60 @@ class AreaBase(BaseModel):
         orm_mode = True
 
 
-class EventLocationBase(BaseModel):
-    event_location_id: int
-    area: AreaBase
+class LocationCreate(BaseModel):
+    name: str
+    address: str
+    phone: Optional[str]
+
+
+class LocationUpdate(BaseModel):
+    name: Optional[str]
+    address: Optional[str]
+    phone: Optional[str]
+
+
+class EventVisitorCategoryCreate(BaseModel):
+    name: VisitorCategoryEnum
+
+
+class EventVisitorCategoryUpdate(BaseModel):
+    name: Optional[VisitorCategoryEnum]
+
+
+class EventVisitorCategoryBase(BaseModel):
+    id: int
+    name: str
 
     class Config:
         orm_mode = True
 
 
+class EventGenreCreate(BaseModel):
+    name: EventGenreEnum
+
+
+class EventGenreUpdate(BaseModel):
+    name: Optional[EventGenreEnum]
+
+
+class EventGenreBase(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
+class EventTagCreate(BaseModel):
+    name: TagEventEnum
+
+
+class EventTagUpdate(BaseModel):
+    name: Optional[TagEventEnum]
+
+
 class EventTagBase(BaseModel):
-    tag_id: int
+    id: int
     name: str
 
     class Config:
@@ -88,15 +127,38 @@ class EventTagBase(BaseModel):
 
 
 class EventBase(BaseModel):
-    event_id: int
+    id: int
     name: str
-    description: str
+    description: Optional[str]
     image_url: Optional[str]
     disabilities: bool
 
-    genre: List[EventGenreBase]
-    event_location: List[EventLocationBase]
-    tags: List[EventTagBase]
+    location: Optional[LocationBase]
+    visitor_category: List[EventVisitorCategoryBase] = []
+    genre: EventGenreBase
+    tag: List[EventTagBase] = []
 
     class Config:
         orm_mode = True
+
+
+class EventCreate(BaseModel):
+    name: str
+    description: str
+    image_url: Optional[str]
+    disabilities: Optional[bool]
+    location_id: Optional[int]
+    genre_id: Optional[int]
+    visitor_category: Optional[List[int]]
+    tag: Optional[List[int]]
+
+
+class EventUpdate(BaseModel):
+    name: Optional[str]
+    description: Optional[str]
+    image_url: Optional[str]
+    disabilities: Optional[bool]
+    location_id: Optional[int]
+    genre_id: Optional[int]
+    visitor_category: Optional[List[int]]
+    tag: Optional[List[int]]

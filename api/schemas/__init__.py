@@ -1,5 +1,19 @@
 from .event import (
-    EventBase
+    EventBase,
+    EventCreate,
+    EventUpdate,
+    LocationBase,
+    LocationCreate,
+    LocationUpdate,
+    EventVisitorCategoryBase,
+    EventVisitorCategoryUpdate,
+    EventVisitorCategoryCreate,
+    EventGenreCreate,
+    EventGenreUpdate,
+    EventGenreBase,
+    EventTagCreate,
+    EventTagUpdate,
+    EventTagBase,
 )
 from .exhibit import ExhibitLogoCreate, ExhibitGet, ExhibitCreate, ExhibitUpdate
 from .email import EmailGet, EmailCreate
@@ -23,5 +37,19 @@ __all__ = (
     "RefreshTokenGet",
     "RefreshTokenResponse",
     "UserUpdate",
-    "EventBase"
+    "EventBase",
+    "EventCreate",
+    "EventUpdate",
+    "LocationBase",
+    "LocationCreate",
+    "LocationUpdate",
+    "EventVisitorCategoryBase",
+    "EventVisitorCategoryUpdate",
+    "EventVisitorCategoryCreate",
+    "EventGenreCreate",
+    "EventGenreUpdate",
+    "EventGenreBase",
+    "EventTagCreate",
+    "EventTagUpdate",
+    "EventTagBase",
 )

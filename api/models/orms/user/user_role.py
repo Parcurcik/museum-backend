@@ -7,8 +7,8 @@ from api.models.enums import UserRoleEnum
 
 
 class UserRoleORM(BaseORM, DateORMMixin):
-    user_role_id = Column(BigInteger, primary_key=True)
-    user_id = Column(ForeignKey("user.user_id", ondelete="CASCADE"), nullable=False)
+    id = Column(BigInteger, primary_key=True)
+    user_id = Column(ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
     role = Column(Enum(UserRoleEnum), nullable=False)
 
     user = relationship(

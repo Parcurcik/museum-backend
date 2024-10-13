@@ -41,6 +41,6 @@ async def update_current_user(
     session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Response:
     user_data = pyload.dict(exclude_unset=True)
-    updated_user = await User.update(session, current_user.user_id, user_data)
+    updated_user = await User.update(session, current_user.id, user_data)
 
     return updated_user
