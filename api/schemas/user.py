@@ -4,7 +4,7 @@ from pydantic import EmailStr
 
 
 class UserGet(BaseModel):
-    user_id: int
+    id: int
 
     class Config:
         orm_mode = True

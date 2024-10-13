@@ -1,69 +1,173 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response
+from fastapi import APIRouter, Depends, HTTPException, status, Response, Path
+from pydantic import PositiveInt
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from api import schemas
-from api.cruds import User
-from api.dependencies import get_session
+from api.cruds import Event, EventGenre, EventTag, EventVisitorCategory, Location
+from api.configuration.database.db_helper import db_helper
 from api.dependencies import get_current_user
 from api.models import UserORM
 
 site_router = APIRouter(prefix="/event", tags=["event"])
 
 
-@site_router.get(
-    "/{id}",
+@site_router.post(
+    "",
     response_model=schemas.EventBase,
-    status_code=200,
+    status_code=201,
     responses={
-        200: {"description": "Event information retrieved successfully"},
-        404: {"description": "Not found"},
+        201: {"description": "Event created successfully"},
     },
 )
-async def get_event_by_id(
-    session: AsyncSession = Depends(get_session),
-    event_id: PositiveInt = Path(..., description="The identifier of event to get"),
+async def create_event(
+        payload: schemas.EventCreate,
+        session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Response:
-    event = Event.get_by_id(session, event_id)
-    return event
+    new_event = await Event.create(session, payload.dict())
+    return new_event
 
 
 @site_router.put(
     "",
-    response_model=schemas.BaseUser,
+    response_model=schemas.EventBase,
     status_code=200,
     responses={
-        200: {"description": "User information updated successfully"},
-        401: {"description": "Unauthorized"},
-        404: {"description": "User not found"},
+        200: {"description": "Event updated successfully"},
     },
 )
-async def update_current_user(
-    pyload: schemas.UserUpdate,
-    current_user: UserORM = Depends(get_current_user),
-    session: AsyncSession = Depends(get_session),
+async def update_event_by_id(
+        pyload: schemas.EventUpdate,
+        event_id: PositiveInt = Path(..., description="The identifier of event to get"),
+        session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Response:
-    user_data = pyload.dict(exclude_unset=True)
-    updated_user = await User.update(session, current_user.user_id, user_data)
+    updated_event = await Event.update(
+        session, event_id, pyload.dict(exclude_unset=True)
+    )
+    return updated_event
 
-    return updated_user
+
+@site_router.get(
+    "/{event_id}",
+    response_model=schemas.EventBase,
+    status_code=200,
+    responses={
+        200: {"description": "Event information get successfully"},
+        404: {"description": "Not found"},
+    },
+)
+async def get_event_by_id(
+        session: AsyncSession = Depends(db_helper.session_getter),
+        event_id: PositiveInt = Path(..., description="The identifier of event to get"),
+) -> Response:
+    event = await Event.get_by_id(session, event_id)
+    return event
 
 
 @site_router.post(
-    "",
-    response_model=schemas.BaseUser,
+    "/location",
+    response_model=schemas.LocationBase,
+    status_code=201,
+    responses={201: {"description": "Location created successfully"}},
+)
+async def create_location(
+        payload: schemas.LocationCreate,
+        session: AsyncSession = Depends(db_helper.session_getter),
+) -> Response:
+    new_location = await Location.create(session, payload.dict())
+    return new_location
+
+
+@site_router.get(
+    "/location/{location_id}",
+    response_model=schemas.LocationBase,
     status_code=200,
     responses={
-        200: {"description": "User information updated successfully"},
-        401: {"description": "Unauthorized"},
-        404: {"description": "User not found"},
+        200: {"description": "Location information get successfully"},
+        404: {"description": "Not found"},
     },
 )
-async def update_current_user(
-    pyload: schemas.UserUpdate,
-    current_user: UserORM = Depends(get_current_user),
-    session: AsyncSession = Depends(get_session),
+async def get_location_by_id(
+        session: AsyncSession = Depends(db_helper.session_getter),
+        location_id: PositiveInt = Path(
+            ..., description="The identifier of location to get"
+        ),
 ) -> Response:
-    user_data = pyload.dict(exclude_unset=True)
-    updated_user = await User.update(session, current_user.user_id, user_data)
+    location = await Location.get_by_id(session, location_id)
+    return location
 
-    return updated_user
+
+@site_router.put(
+    "/location/{location_id}",
+    response_model=schemas.LocationBase,
+    status_code=200,
+    responses={
+        200: {"description": "Location updated successfully"},
+        404: {"description": "Not found"},
+    },
+)
+async def update_location_by_id(
+        payload: schemas.LocationUpdate,
+        session: AsyncSession = Depends(db_helper.session_getter),
+        location_id: PositiveInt = Path(
+            ..., description="The identifier of location to update"
+        ),
+) -> Response:
+    updated_location = await Location.update(
+        session, location_id, payload.dict(exclude_unset=True)
+    )
+    return updated_location
+
+
+@site_router.get(
+    "/visitor_category/{visitor_category_id}",
+    response_model=schemas.EventVisitorCategoryBase,
+    status_code=200,
+    responses={
+        200: {"description": "Event visitor category information get successfully"},
+        404: {"description": "Not found"},
+    },
+)
+async def get_visitor_category_by_id(
+        session: AsyncSession = Depends(db_helper.session_getter),
+        visitor_category_id: PositiveInt = Path(
+            ..., description="The identifier of visitor category to get"
+        ),
+) -> Response:
+    visitor_category = await EventVisitorCategory.get_by_id(
+        session, visitor_category_id
+    )
+    return visitor_category
+
+
+@site_router.get(
+    "/genre/{genre_id}",
+    response_model=schemas.EventGenreBase,
+    status_code=200,
+    responses={
+        200: {"description": "Event genre information get successfully"},
+        404: {"description": "Not found"},
+    },
+)
+async def get_event_genre_by_id(
+        session: AsyncSession = Depends(db_helper.session_getter),
+        genre_id: PositiveInt = Path(..., description="The identifier of genre to get"),
+) -> Response:
+    genre = await EventGenre.get_by_id(session, genre_id)
+    return genre
+
+
+@site_router.get(
+    "/tag/{tag_id}",
+    response_model=schemas.EventTagBase,
+    status_code=200,
+    responses={
+        200: {"description": "Event tag information get successfully"},
+        404: {"description": "Not found"},
+    },
+)
+async def get_event_tag_by_id(
+        session: AsyncSession = Depends(db_helper.session_getter),
+        tag_id: PositiveInt = Path(..., description="The identifier of tag to get"),
+) -> Response:
+    tag = await EventTag.get_by_id(session, tag_id)
+    return tag

@@ -4,7 +4,7 @@ from .event import (
     EventORM,
     EventTagORM,
     EventGenreORM,
-    EventVisitorCategoryORM,
+    VisitorCategoryORM,
 )
 from .location import LocationORM
 
@@ -16,6 +16,6 @@ __all__ = (
     "EventORM",
     "EventTagORM",
     "EventGenreORM",
-    "EventVisitorCategoryORM",
+    "VisitorCategoryORM",
     "LocationORM",
 )
