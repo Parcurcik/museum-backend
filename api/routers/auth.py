@@ -26,9 +26,8 @@ site_router = APIRouter(prefix="/auth", tags=["auth"])
     response_model=schemas.VerificationCodeGet,
     status_code=200,
     responses={
-        200: {"description": "Verification code sent"},
-        422: {"description": "Validation error"},
-        500: {"description": "Internal server error"},
+        200: {"description": "Success"},
+        500: {"description": "Internal server error", "model": schemas.ErrorGeneral},
     },
 )
 async def send_code(
@@ -51,10 +50,9 @@ async def send_code(
     response_model=schemas.TokensResponse,
     status_code=200,
     responses={
-        200: {"description": "Verification code validated and token generated"},
-        422: {"description": "Validation error"},
-        400: {"description": "Invalid verification code"},
-        500: {"description": "Internal server error"},
+        200: {"description": "Success"},
+        400: {"description": "Invalid verification code", "model": schemas.ErrorGeneral},
+        500: {"description": "Internal server error", "model": schemas.ErrorGeneral},
     },
 )
 async def verify_code(
@@ -86,8 +84,9 @@ async def verify_code(
     response_model=schemas.RefreshTokenResponse,
     status_code=200,
     responses={
-        200: {"description": "Access token refreshed"},
-        401: {"description": "Invalid or expired refresh token"},
+        200: {"description": "Success"},
+        400: {"description": "Invalid or expired refresh token", "model": schemas.ErrorGeneral},
+        500: {"description": "Internal server error", "model": schemas.ErrorGeneral},
     },
 )
 async def refresh_token(
@@ -97,7 +96,7 @@ async def refresh_token(
     stored_token = await RefreshToken.get_by_token(session, payload.refresh_token)
 
     if not stored_token or stored_token.expires < datetime.now(UTC):
-        raise HTTPException(status_code=401, detail="Invalid refresh token")
+        raise HTTPException(status_code=400, detail="Invalid refresh token")
 
     user = await User.get_by_id(session, stored_token.user_id)
     if not user:
