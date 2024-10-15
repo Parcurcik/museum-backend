@@ -1,12 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response, Path
+from fastapi import APIRouter, Depends, HTTPException, status, Response, Path, UploadFile
 from pydantic import PositiveInt
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from api import schemas
 from api.cruds import Event, EventGenre, EventTag, EventVisitorCategory, Location
 from api.configuration.database.db_helper import db_helper
-from api.dependencies import get_current_user, is_admin
+from api.dependencies import get_current_user, is_admin, get_image_with
 from api.models import UserORM
+from api.utils.image import save_event_image
 
 site_router = APIRouter(prefix="/event", tags=["event"])
 
@@ -57,6 +58,28 @@ async def update_event_by_id(
     updated_event = await Event.update(
         session, event_id, pyload.dict(exclude_unset=True)
     )
+    return updated_event
+
+
+@site_router.post(
+    "/{event_id}/upload_logo",
+    status_code=200,
+    response_model=schemas.EventBase,
+    responses={
+        200: {"description": "Success"},
+        400: {"description": "Bad Request", "model": schemas.ErrorGeneral},
+        404: {"description": "Not found", "model": schemas.ErrorNotFound},
+        500: {"description": "Internal server error", "model": schemas.ErrorGeneral},
+    },
+)
+async def upload_event_logo_by_id(
+        event_id: PositiveInt = Path(..., description="The identifier of event"),
+        file: UploadFile = Depends(get_image_with),
+        current_user: UserORM = Depends(is_admin),
+        session: AsyncSession = Depends(db_helper.session_getter),
+) -> Response:
+    image_url = save_event_image(file)
+    updated_event = await Event.update_image_url(session, event_id, image_url)
     return updated_event
 
 

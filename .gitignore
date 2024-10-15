@@ -30,3 +30,4 @@ archive.zip
 
 # creds
 .env
+/api/static/event/
