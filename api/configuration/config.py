@@ -40,13 +40,8 @@ class Settings(BaseSettings):
     REDIS_PORT: int = 6379
     REDIS_DB: int = 0
     REDIS_PASSWORD: str = os.getenv("REDIS_PASSWORD", "")
-    # S3
-    S3_EVENT_FILES_DIR: str = "event"
-    S3_EXHIBIT_FILES_DIR: str = "exhibit"
-    S3_BUCKET: str = os.getenv("", "S3_BUCKET")
-    S3_ACCESS_KEY: str = os.getenv("", "S3_ACCESS_KEY")
-    S3_SECRET_KEY: str = os.getenv("", "S3_SECRET_KEY")
-    S3_URL: str = os.getenv("", "S3_URL")
+    # Static
+    STATIC_DIR: str = os.getenv("STATIC_DIR", "./api/static/")
     # email
     SMTP_HOST: str = os.getenv("", "EMAIL_HOST")
     SMTP_USERNAME: str = os.getenv("", "EMAIL_USERNAME")

@@ -145,7 +145,6 @@ class EventBase(BaseModel):
 class EventCreate(BaseModel):
     name: str
     description: str
-    image_url: Optional[str]
     disabilities: Optional[bool]
     location_id: Optional[int]
     genre_id: Optional[int]
@@ -157,7 +156,6 @@ class EventCreate(BaseModel):
 class EventUpdate(BaseModel):
     name: Optional[str]
     description: Optional[str]
-    image_url: Optional[str]
     disabilities: Optional[bool]
     location_id: Optional[int]
     genre_id: Optional[int]

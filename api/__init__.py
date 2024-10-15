@@ -1,7 +1,9 @@
+import os
 from fastapi import FastAPI, Request
 from typing import Optional, Awaitable, Callable, AsyncGenerator
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import StreamingResponse
+from starlette.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 
 from api.configuration.config import settings
@@ -34,6 +36,8 @@ def _init_app() -> FastAPI:
         docs_url=f"{settings.PREFIX}/docs",
         redoc_url=f"{settings.PREFIX}/redoc",
     )
+
+    app.mount("/static", StaticFiles(directory=settings.STATIC_DIR), name="static")
 
     if len(settings.CORS_ORIGINS) > 0 or settings.CORS_ORIGIN_REGEX is not None:
         app.add_middleware(

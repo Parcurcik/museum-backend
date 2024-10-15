@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError, ResponseValidationError
 from sqlalchemy.exc import NoResultFound, IntegrityError
 from api.cruds.base import ModelNotFoundError
+from api.dependencies.image import ImageUploadError
 
 
 def init_exception_handlers(app: FastAPI):
@@ -12,6 +13,15 @@ def init_exception_handlers(app: FastAPI):
             status_code=404,
             content={
                 "detail": f"{exc.model.title()} not found",
+            },
+        )
+
+    @app.exception_handler(ImageUploadError)
+    async def image_upload_error(request: Request, exc: ImageUploadError):
+        return JSONResponse(
+            status_code=400,
+            content={
+                "detail": f"{exc.detail}",
             },
         )
 
