@@ -13,7 +13,7 @@ def save_event_image(file: UploadFile) -> str:
         os.makedirs(event_dir)
 
     current_date = datetime.now().strftime("%Y_%m_%d_%H-%M-%S")
-    extension = file.filename.split('.')[-1]
+    extension = file.filename.split(".")[-1]
     filename = f"{current_date}.{extension}"
     file_path = os.path.join(event_dir, filename)
 

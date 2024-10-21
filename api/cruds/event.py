@@ -9,7 +9,9 @@ from api.models import EventORM
 class Event(Base):
 
     @classmethod
-    async def update_image_url(cls, session: AsyncSession, event_id: int, image_url: str) -> EventORM:
+    async def update_image_url(
+        cls, session: AsyncSession, event_id: int, image_url: str
+    ) -> EventORM:
         event = await cls.get_by_id(session, event_id)
         event.image_url = image_url
         await session.commit()

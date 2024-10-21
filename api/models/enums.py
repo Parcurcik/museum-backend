@@ -60,3 +60,9 @@ class UserRoleEnum(str, Enum):
     admin = "Администратор"
     employee = "Сотрудник"
     user = "Пользователь"
+
+
+class TicketStatusEnum(str, Enum):
+    available = "Доступен"
+    booked = "Забронирован"
+    sold = "Продан"

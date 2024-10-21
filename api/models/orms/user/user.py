@@ -25,5 +25,7 @@ class UserORM(BaseORM, DateORMMixin):
         lazy="selectin",
     )
 
+    tickets = relationship("TicketORM", back_populates="user", lazy="selectin")
+
     def __repr__(self) -> str:
         return f"<{self.__tablename__} {self.user_id} {self.number}>"

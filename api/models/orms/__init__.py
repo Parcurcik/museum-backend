@@ -6,6 +6,7 @@ from .event import (
     EventGenreORM,
     VisitorCategoryORM,
 )
+from .ticket import TicketORM
 from .location import LocationORM
 
 __all__ = (
@@ -18,4 +19,5 @@ __all__ = (
     "EventGenreORM",
     "VisitorCategoryORM",
     "LocationORM",
+    "TicketORM",
 )

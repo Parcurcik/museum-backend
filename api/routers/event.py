@@ -1,4 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response, Path, UploadFile
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    status,
+    Response,
+    Path,
+    UploadFile,
+)
 from pydantic import PositiveInt
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,9 +38,9 @@ response_codes = {
     },
 )
 async def create_event(
-        payload: schemas.EventCreate,
-        session: AsyncSession = Depends(db_helper.session_getter),
-        current_user: UserORM = Depends(is_admin),
+    payload: schemas.EventCreate,
+    session: AsyncSession = Depends(db_helper.session_getter),
+    current_user: UserORM = Depends(is_admin),
 ) -> Response:
     new_event = await Event.create(session, payload.dict())
     return new_event
@@ -50,10 +58,10 @@ async def create_event(
     },
 )
 async def update_event_by_id(
-        pyload: schemas.EventUpdate,
-        event_id: PositiveInt = Path(..., description="The identifier of event"),
-        current_user: UserORM = Depends(is_admin),
-        session: AsyncSession = Depends(db_helper.session_getter),
+    pyload: schemas.EventUpdate,
+    event_id: PositiveInt = Path(..., description="The identifier of event"),
+    current_user: UserORM = Depends(is_admin),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Response:
     updated_event = await Event.update(
         session, event_id, pyload.dict(exclude_unset=True)
@@ -73,10 +81,10 @@ async def update_event_by_id(
     },
 )
 async def upload_event_logo_by_id(
-        event_id: PositiveInt = Path(..., description="The identifier of event"),
-        file: UploadFile = Depends(get_image_with),
-        current_user: UserORM = Depends(is_admin),
-        session: AsyncSession = Depends(db_helper.session_getter),
+    event_id: PositiveInt = Path(..., description="The identifier of event"),
+    file: UploadFile = Depends(get_image_with),
+    current_user: UserORM = Depends(is_admin),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Response:
     image_url = save_event_image(file)
     updated_event = await Event.update_image_url(session, event_id, image_url)
@@ -90,8 +98,8 @@ async def upload_event_logo_by_id(
     responses=response_codes,
 )
 async def get_event_by_id(
-        session: AsyncSession = Depends(db_helper.session_getter),
-        event_id: PositiveInt = Path(..., description="The identifier of event"),
+    session: AsyncSession = Depends(db_helper.session_getter),
+    event_id: PositiveInt = Path(..., description="The identifier of event"),
 ) -> Response:
     event = await Event.get_by_id(session, event_id)
     return event
@@ -109,9 +117,9 @@ async def get_event_by_id(
     },
 )
 async def create_location(
-        payload: schemas.LocationCreate,
-        current_user: UserORM = Depends(is_admin),
-        session: AsyncSession = Depends(db_helper.session_getter),
+    payload: schemas.LocationCreate,
+    current_user: UserORM = Depends(is_admin),
+    session: AsyncSession = Depends(db_helper.session_getter),
 ) -> Response:
     new_location = await Location.create(session, payload.dict())
     return new_location
@@ -124,8 +132,8 @@ async def create_location(
     responses=response_codes,
 )
 async def get_location_by_id(
-        session: AsyncSession = Depends(db_helper.session_getter),
-        location_id: PositiveInt = Path(..., description="The identifier of location"),
+    session: AsyncSession = Depends(db_helper.session_getter),
+    location_id: PositiveInt = Path(..., description="The identifier of location"),
 ) -> Response:
     location = await Location.get_by_id(session, location_id)
     return location
@@ -143,10 +151,10 @@ async def get_location_by_id(
     },
 )
 async def update_location_by_id(
-        payload: schemas.LocationUpdate,
-        session: AsyncSession = Depends(db_helper.session_getter),
-        location_id: PositiveInt = Path(..., description="The identifier of location"),
-        current_user: UserORM = Depends(is_admin),
+    payload: schemas.LocationUpdate,
+    session: AsyncSession = Depends(db_helper.session_getter),
+    location_id: PositiveInt = Path(..., description="The identifier of location"),
+    current_user: UserORM = Depends(is_admin),
 ) -> Response:
     updated_location = await Location.update(
         session, location_id, payload.dict(exclude_unset=True)
@@ -161,10 +169,10 @@ async def update_location_by_id(
     responses=response_codes,
 )
 async def get_visitor_category_by_id(
-        session: AsyncSession = Depends(db_helper.session_getter),
-        visitor_category_id: PositiveInt = Path(
-            ..., description="The identifier of visitor category"
-        ),
+    session: AsyncSession = Depends(db_helper.session_getter),
+    visitor_category_id: PositiveInt = Path(
+        ..., description="The identifier of visitor category"
+    ),
 ) -> Response:
     visitor_category = await EventVisitorCategory.get_by_id(
         session, visitor_category_id
@@ -179,8 +187,8 @@ async def get_visitor_category_by_id(
     responses=response_codes,
 )
 async def get_event_genre_by_id(
-        session: AsyncSession = Depends(db_helper.session_getter),
-        genre_id: PositiveInt = Path(..., description="The identifier of genre"),
+    session: AsyncSession = Depends(db_helper.session_getter),
+    genre_id: PositiveInt = Path(..., description="The identifier of genre"),
 ) -> Response:
     genre = await EventGenre.get_by_id(session, genre_id)
     return genre
@@ -193,8 +201,8 @@ async def get_event_genre_by_id(
     responses=response_codes,
 )
 async def get_event_tag_by_id(
-        session: AsyncSession = Depends(db_helper.session_getter),
-        tag_id: PositiveInt = Path(..., description="The identifier of tag"),
+    session: AsyncSession = Depends(db_helper.session_getter),
+    tag_id: PositiveInt = Path(..., description="The identifier of tag"),
 ) -> Response:
     tag = await EventTag.get_by_id(session, tag_id)
     return tag

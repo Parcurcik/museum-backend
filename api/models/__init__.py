@@ -9,6 +9,7 @@ from .orms import (
     EventGenreORM,
     VisitorCategoryORM,
     LocationORM,
+    TicketORM,
 )
 
 __all__ = (
@@ -25,4 +26,5 @@ __all__ = (
     "EventGenreORM",
     "VisitorCategoryORM",
     "LocationORM",
+    "TicketORM"
 )
