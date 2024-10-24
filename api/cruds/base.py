@@ -47,7 +47,7 @@ class Base:
 
     @classmethod
     async def update(
-        cls, session: AsyncSession, id_: int, data: Dict[str, Any]
+            cls, session: AsyncSession, id_: int, data: Dict[str, Any]
     ) -> BaseORM:
         obj = await cls.get_by_id(session, id_)
         for key, value in data.items():
@@ -61,6 +61,12 @@ class Base:
         obj = await cls.get_by_id(session, id_)
         await session.delete(obj)
         await session.commit()
+
+    @classmethod
+    async def get_all(cls, session: AsyncSession) -> list:
+        query = select(cls.model)
+        result = await session.execute(query)
+        return result.scalars().all()
 
 
 _BaseCRUDT = TypeVar("_BaseCRUDT", bound=Base)

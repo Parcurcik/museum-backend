@@ -50,6 +50,42 @@ async def create_event(
 
 
 @site_router.get(
+    "/locations",
+    response_model=List[schemas.LocationBase],
+    status_code=200,
+    responses=response_codes,
+)
+async def get_location_list(
+        session: AsyncSession = Depends(db_helper.session_getter),
+) -> Response:
+    return await Location.get_all(session)
+
+
+@site_router.get(
+    "/visitor_categories",
+    response_model=List[schemas.EventVisitorCategoryBase],
+    status_code=200,
+    responses=response_codes,
+)
+async def get_visitor_categories_list(
+        session: AsyncSession = Depends(db_helper.session_getter),
+) -> Response:
+    return await EventVisitorCategory.get_all(session)
+
+
+@site_router.get(
+    "/genres",
+    response_model=List[schemas.EventGenreBase],
+    status_code=200,
+    responses=response_codes,
+)
+async def get_genre_list(
+        session: AsyncSession = Depends(db_helper.session_getter),
+) -> Response:
+    return await EventGenre.get_all(session)
+
+
+@site_router.get(
     "/filter",
     status_code=200,
     response_model=List[schemas.EventBase],
@@ -61,9 +97,9 @@ async def create_event(
     },
 )
 async def filter_event(
-        genre_ids: List[int] = Query(None, description="Жанр"),
-        location_ids: List[int] = Query(None, description="Локация"),
-        visitor_categories: List[int] = Query(
+        genre: List[int] = Query(None, description="Жанр"),
+        location: List[int] = Query(None, description="Локация"),
+        visitor_category: List[int] = Query(
             None, description="Категория посетителей"
         ),
         disabilities: bool = Query(None, description="Инклюзивность"),
@@ -73,9 +109,9 @@ async def filter_event(
 ) -> Response:
     events = await Event.filter(
         session,
-        genre_ids,
-        location_ids,
-        visitor_categories,
+        genre,
+        location,
+        visitor_category,
         disabilities,
         offset,
         limit,

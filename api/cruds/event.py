@@ -25,9 +25,9 @@ class Event(Base):
     async def filter(
             cls,
             session: AsyncSession,
-            genre_ids: List[int] = None,
-            location_ids: List[int] = None,
-            visitor_categories: List[int] = None,
+            genre: List[int] = None,
+            location: List[int] = None,
+            visitor_category: List[int] = None,
             disabilities: bool = None,
             offset: int = 0,
             limit: int = 10,
@@ -35,15 +35,15 @@ class Event(Base):
 
         query = select(EventORM)
 
-        if genre_ids:
-            query = query.filter(EventORM.genre_id.in_(genre_ids))
+        if genre:
+            query = query.filter(EventORM.genre_id.in_(genre))
 
-        if location_ids is not None:
-            query = query.filter(EventORM.location_id.in_(location_ids))
+        if location is not None:
+            query = query.filter(EventORM.location_id.in_(location))
 
-        if visitor_categories:
+        if visitor_category:
             query = query.join(event_visitor_category_association).filter(
-                event_visitor_category_association.c.visitor_category_id.in_(visitor_categories)
+                event_visitor_category_association.c.visitor_category_id.in_(visitor_category)
             )
 
         if disabilities is not None:
