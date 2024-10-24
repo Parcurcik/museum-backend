@@ -16,7 +16,7 @@ from api.models.mixin.date import DateORMMixin
 from api.models.orms.base import BaseORM
 
 
-class LocationORM(BaseORM, DateORMMixin):
+class LocationORM(BaseORM):
     id = Column(BigInteger, primary_key=True)
     name = Column(String, nullable=False)
     address = Column(String)

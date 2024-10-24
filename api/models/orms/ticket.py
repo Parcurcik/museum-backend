@@ -1,4 +1,14 @@
-from sqlalchemy import  Integer, BigInteger, Boolean, Column, String, ForeignKey, Table, Enum, DateTime
+from sqlalchemy import (
+    Integer,
+    BigInteger,
+    Boolean,
+    Column,
+    String,
+    ForeignKey,
+    Table,
+    Enum,
+    DateTime,
+)
 from sqlalchemy.orm import relationship
 
 from api.models.mixin.date import DateORMMixin
@@ -6,7 +16,7 @@ from api.models.orms.base import BaseORM
 from api.models.enums import TicketTypeEnum, TicketStatusEnum
 
 
-class TicketORM(BaseORM):
+class TicketORM(BaseORM, DateORMMixin):
     id = Column(BigInteger, primary_key=True)
     event_id = Column(BigInteger, ForeignKey("event.id"), nullable=False)
     customer_id = Column(BigInteger, ForeignKey("user.id"), nullable=True)

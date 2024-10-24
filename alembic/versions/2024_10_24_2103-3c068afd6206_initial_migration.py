@@ -1,8 +1,8 @@
-"""user and event
+"""initial migration
 
-Revision ID: 9f2d8d702732
+Revision ID: 3c068afd6206
 Revises: 
-Create Date: 2024-10-12 14:18:14.821040
+Create Date: 2024-10-24 21:03:32.803948
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "9f2d8d702732"
+revision: str = "3c068afd6206"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -24,57 +24,13 @@ def upgrade() -> None:
     op.create_table(
         "event_genre",
         sa.Column("id", sa.BigInteger(), nullable=False),
-        sa.Column(
-            "name",
-            sa.Enum(
-                "excursion",
-                "master_class",
-                "spectacle",
-                "exhibition",
-                "interactive_lesson",
-                "concert",
-                "genealogy",
-                "lecture",
-                "creative_meeting",
-                "festival",
-                "artist_talk",
-                "film_screening",
-                name="eventgenreenum",
-            ),
-            nullable=False,
-        ),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("name", sa.String(), nullable=False),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_event_genre")),
     )
     op.create_table(
         "event_tag",
         sa.Column("id", sa.BigInteger(), nullable=False),
-        sa.Column(
-            "name",
-            sa.Enum(
-                "architecture",
-                "literature",
-                "science",
-                "history_of_ussr",
-                "history_of_yekaterinburg",
-                "poetry",
-                "music",
-                "philosophy",
-                "flora_and_fauna",
-                "handmade",
-                "cinematography",
-                "cartoons",
-                "tourism",
-                "genealogy",
-                "paleontology",
-                "archaeology",
-                name="tageventenum",
-            ),
-            nullable=False,
-        ),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("name", sa.String(), nullable=False),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_event_tag")),
     )
     op.create_table(
@@ -83,8 +39,6 @@ def upgrade() -> None:
         sa.Column("name", sa.String(), nullable=False),
         sa.Column("address", sa.String(), nullable=True),
         sa.Column("phone", sa.String(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_location")),
     )
     op.create_table(
@@ -102,13 +56,7 @@ def upgrade() -> None:
     op.create_table(
         "visitor_category",
         sa.Column("id", sa.BigInteger(), nullable=False),
-        sa.Column(
-            "name",
-            sa.Enum("kids", "teenagers", "adults", name="visitorcategoryenum"),
-            nullable=False,
-        ),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
-        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("name", sa.String(), nullable=False),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_visitor_category")),
     )
     op.create_table(
@@ -211,11 +159,43 @@ def upgrade() -> None:
             name=op.f("pk_event_visitor_category_association"),
         ),
     )
+    op.create_table(
+        "ticket",
+        sa.Column("id", sa.BigInteger(), nullable=False),
+        sa.Column("event_id", sa.BigInteger(), nullable=False),
+        sa.Column("customer_id", sa.BigInteger(), nullable=True),
+        sa.Column(
+            "status",
+            sa.Enum("available", "booked", "sold", name="ticketstatusenum"),
+            nullable=True,
+        ),
+        sa.Column(
+            "type",
+            sa.Enum("adult", "discount", "child", name="tickettypeenum"),
+            nullable=False,
+        ),
+        sa.Column("price", sa.Integer(), nullable=False),
+        sa.Column("booked_at", sa.DateTime(), nullable=True),
+        sa.Column("purchased_at", sa.DateTime(), nullable=True),
+        sa.Column("event_date", sa.DateTime(), nullable=False),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
+        sa.ForeignKeyConstraint(
+            ["customer_id"],
+            ["user.id"],
+            name=op.f("fk_ticket_customer_id_user"),
+        ),
+        sa.ForeignKeyConstraint(
+            ["event_id"], ["event.id"], name=op.f("fk_ticket_event_id_event")
+        ),
+        sa.PrimaryKeyConstraint("id", name=op.f("pk_ticket")),
+    )
     # ### end Alembic commands ###
 
 
 def downgrade() -> None:
     # ### commands auto generated by Alembic - please adjust! ###
+    op.drop_table("ticket")
     op.drop_table("event_visitor_category_association")
     op.drop_table("event_tag_association")
     op.drop_table("user_role")
