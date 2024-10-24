@@ -1,12 +1,23 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response, Path, UploadFile
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    status,
+    Response,
+    Path,
+    UploadFile,
+    Query,
+)
 from pydantic import PositiveInt
-
 from sqlalchemy.ext.asyncio import AsyncSession
+from typing import List
+
 from api import schemas
 from api.cruds import Event, EventGenre, EventTag, EventVisitorCategory, Location
 from api.configuration.database.db_helper import db_helper
 from api.dependencies import get_current_user, is_admin, get_image_with
 from api.models import UserORM
+from api.models.enums import FilterEventGenreEnum, FilterVisitorCategoryEnum
 from api.utils.image import save_event_image
 
 site_router = APIRouter(prefix="/event", tags=["event"])
@@ -36,6 +47,40 @@ async def create_event(
 ) -> Response:
     new_event = await Event.create(session, payload.dict())
     return new_event
+
+
+@site_router.get(
+    "/filter",
+    status_code=200,
+    response_model=List[schemas.EventBase],
+    responses={
+        201: {"description": "Success"},
+        400: {"description": "Bad Request", "model": schemas.ErrorGeneral},
+        404: {"description": "Not found", "model": schemas.ErrorNotFound},
+        500: {"description": "Internal server error", "model": schemas.ErrorGeneral},
+    },
+)
+async def filter_event(
+        genre_ids: List[int] = Query(None, description="Жанр"),
+        location_ids: List[int] = Query(None, description="Локация"),
+        visitor_categories: List[int] = Query(
+            None, description="Категория посетителей"
+        ),
+        disabilities: bool = Query(None, description="Инклюзивность"),
+        offset: int = Query(0, ge=0, description="Offset"),
+        limit: int = Query(10, gt=0, le=100, description="Limit"),
+        session: AsyncSession = Depends(db_helper.session_getter),
+) -> Response:
+    events = await Event.filter(
+        session,
+        genre_ids,
+        location_ids,
+        visitor_categories,
+        disabilities,
+        offset,
+        limit,
+    )
+    return events
 
 
 @site_router.put(

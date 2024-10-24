@@ -1,9 +1,8 @@
-from sqlalchemy import BigInteger, Boolean, Column, String, ForeignKey, Table, Enum
+from sqlalchemy import BigInteger, Boolean, Column, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
 from api.models.mixin.date import DateORMMixin
 from api.models.orms.base import BaseORM
-from api.models.enums import VisitorCategoryEnum, EventGenreEnum, TagEventEnum
 
 event_visitor_category_association = Table(
     "event_visitor_category_association",
@@ -59,13 +58,15 @@ class EventORM(BaseORM, DateORMMixin):
         lazy="selectin",
     )
 
+    tickets = relationship("TicketORM", back_populates="event", lazy="selectin")
+
     def __repr__(self) -> str:
         return f"<{self.__tablename__} {self.id} {self.name}>"
 
 
-class VisitorCategoryORM(BaseORM, DateORMMixin):
+class VisitorCategoryORM(BaseORM):
     id = Column(BigInteger, primary_key=True)
-    name = Column(Enum(VisitorCategoryEnum), nullable=False)
+    name = Column(String, nullable=False)
 
     events = relationship(
         "EventORM",
@@ -78,9 +79,9 @@ class VisitorCategoryORM(BaseORM, DateORMMixin):
         return f"<{self.__tablename__} {self.id} {self.name}>"
 
 
-class EventGenreORM(BaseORM, DateORMMixin):
+class EventGenreORM(BaseORM):
     id = Column(BigInteger, primary_key=True)
-    name = Column(Enum(EventGenreEnum), nullable=False)
+    name = Column(String, nullable=False)
 
     events = relationship(
         "EventORM",
@@ -92,9 +93,9 @@ class EventGenreORM(BaseORM, DateORMMixin):
         return f"<{self.__tablename__} {self.id} {self.name}>"
 
 
-class EventTagORM(BaseORM, DateORMMixin):
+class EventTagORM(BaseORM):
     id = Column(BigInteger, primary_key=True)
-    name = Column(Enum(TagEventEnum), nullable=False)
+    name = Column(String, nullable=False)
 
     events = relationship(
         "EventORM",

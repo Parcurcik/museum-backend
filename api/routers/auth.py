@@ -51,7 +51,10 @@ async def send_code(
     status_code=200,
     responses={
         200: {"description": "Success"},
-        400: {"description": "Invalid verification code", "model": schemas.ErrorGeneral},
+        400: {
+            "description": "Invalid verification code",
+            "model": schemas.ErrorGeneral,
+        },
         500: {"description": "Internal server error", "model": schemas.ErrorGeneral},
     },
 )
@@ -85,7 +88,10 @@ async def verify_code(
     status_code=200,
     responses={
         200: {"description": "Success"},
-        400: {"description": "Invalid or expired refresh token", "model": schemas.ErrorGeneral},
+        400: {
+            "description": "Invalid or expired refresh token",
+            "model": schemas.ErrorGeneral,
+        },
         500: {"description": "Internal server error", "model": schemas.ErrorGeneral},
     },
 )

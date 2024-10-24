@@ -1,11 +1,7 @@
 from fastapi import UploadFile
 from api.exceptions.base import ImageUploadError
 
-MIME_TYPES = {
-    "image/jpeg",
-    "image/png",
-    "image/jpg"
-}
+MIME_TYPES = {"image/jpeg", "image/png", "image/jpg"}
 MAX_IMAGE_SIZE = 5 * 1024 * 1024
 
 

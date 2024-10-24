@@ -36,7 +36,7 @@ def init_exception_handlers(app: FastAPI):
 
     @app.exception_handler(ResponseValidationError)
     async def validation_exception_handler(
-            request: Request, exc: ResponseValidationError
+        request: Request, exc: ResponseValidationError
     ):
         return JSONResponse(
             status_code=422,

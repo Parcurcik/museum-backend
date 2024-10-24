@@ -60,3 +60,30 @@ class UserRoleEnum(str, Enum):
     admin = "Администратор"
     employee = "Сотрудник"
     user = "Пользователь"
+
+
+class TicketStatusEnum(str, Enum):
+    available = "Доступен"
+    booked = "Забронирован"
+    sold = "Продан"
+
+
+class FilterEventGenreEnum(str, Enum):
+    excursion = 'excursion'
+    master_class = 'master_class'
+    spectacle = 'spectacle'
+    exhibition = 'exhibition'
+    interactive_lesson = 'interactive_lesson'
+    concert = 'concert'
+    genealogy = 'genealogy_event'
+    lecture = "lecture"
+    creative_meeting = "creative_meeting"
+    festival = "festival"
+    artist_talk = "artist_talk"
+    film_screening = "film_screening"
+
+
+class FilterVisitorCategoryEnum(str, Enum):
+    kids = "kids"
+    teenagers = "teenagers"
+    adults = "adults"
